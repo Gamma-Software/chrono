@@ -101,9 +101,9 @@ bool ChIrrGuiDriver::OnEvent(const SEvent& event) {
 
         m_dT = 0;
 
-        double th = event.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_Z] + SHRT_MAX;
-        double br = event.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_R] + SHRT_MAX;
-        double new_steering = (double)event.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_X] / SHRT_MAX;
+        double th = event.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_U] + SHRT_MAX;
+        double br = event.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_Z] + SHRT_MAX;
+        double new_steering = (double)event.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_R] / SHRT_MAX;
         double new_throttle = (2 * SHRT_MAX - th) / (2 * SHRT_MAX);
         double new_braking = (2 * SHRT_MAX - br) / (2 * SHRT_MAX);
 
@@ -113,19 +113,18 @@ bool ChIrrGuiDriver::OnEvent(const SEvent& event) {
             SetThrottle(new_throttle);
         if (m_braking != new_braking)
             SetBraking(new_braking);
-
+        
         if (event.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_Y] != SHRT_MAX) {
             SetThrottle(0);
             /// Gear is set to reverse
-            if (event.JoystickEvent.IsButtonPressed(22)) {
+            if (event.JoystickEvent.IsButtonPressed(2)
+                && m_app.m_powertrain->GetDriveMode() != ChPowertrain::REVERSE) {
                 m_app.m_powertrain->SetDriveMode(ChPowertrain::REVERSE);
-
-            } else if (event.JoystickEvent.IsButtonPressed(12) || event.JoystickEvent.IsButtonPressed(13) ||
-                       event.JoystickEvent.IsButtonPressed(14) || event.JoystickEvent.IsButtonPressed(15) ||
-                       event.JoystickEvent.IsButtonPressed(16) || event.JoystickEvent.IsButtonPressed(17)) {
+            } else if (event.JoystickEvent.IsButtonPressed(0)
+                && m_app.m_powertrain->GetDriveMode() != ChPowertrain::FORWARD) {
                 // All 'forward' gears set drive mode to forward, regardless of gear
                 m_app.m_powertrain->SetDriveMode(ChPowertrain::FORWARD);
-            } else {
+            } else if(event.JoystickEvent.IsButtonPressed(1) && m_app.m_powertrain->GetDriveMode() != ChPowertrain::NEUTRAL){
                 m_app.m_powertrain->SetDriveMode(ChPowertrain::NEUTRAL);
             }
         }
