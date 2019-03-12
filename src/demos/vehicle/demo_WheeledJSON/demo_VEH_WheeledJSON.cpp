@@ -57,7 +57,7 @@ using namespace chrono::vehicle;
 // =============================================================================
 
 // JSON file for vehicle model
-std::string vehicle_file("hmmwv/vehicle/HMMWV_Vehicle.json");
+std::string vehicle_file("hmmwv/vehicle/HMMWV_Vehicle_simple.json");
 ////std::string vehicle_file("hmmwv/vehicle/HMMWV_Vehicle_simple_lugged.json");
 ////std::string vehicle_file("hmmwv/vehicle/HMMWV_Vehicle_4WD.json");
 ////std::string vehicle_file("generic/vehicle/Vehicle_DoubleWishbones.json");
@@ -114,7 +114,7 @@ double render_step_size = 1.0 / 50;  // FPS = 50
 ChVector<> trackPoint(0.0, 0.0, 1.75);
 
 // Simulation length (Povray only)
-double tend = 20.0;
+double tend = 2.0;
 
 // Output directories (Povray only)
 const std::string out_dir = GetChronoOutputPath() + "WHEELED_JSON";
@@ -313,7 +313,7 @@ int main(int argc, char* argv[]) {
     char filename[100];
 
     while (time < tend) {
-        if (step_number % render_steps == 0) {
+        /*if (step_number % render_steps == 0) {
             // Output render data
             sprintf(filename, "%s/data_%03d.dat", pov_dir.c_str(), render_frame + 1);
             utils::WriteShapesPovray(vehicle.GetSystem(), filename);
@@ -324,7 +324,8 @@ int main(int argc, char* argv[]) {
                       << "   braking:  " << driver.GetBraking() << std::endl;
             std::cout << std::endl;
             render_frame++;
-        }
+        }*/
+        printf("time %f", time);
 
         // Collect output data from modules (for inter-module communication)
         throttle_input = driver.GetThrottle();

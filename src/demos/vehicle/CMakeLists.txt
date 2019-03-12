@@ -10,6 +10,7 @@ ENDIF()
 MESSAGE(STATUS "Demo programs for VEHICLE module...")
 
 ADD_SUBDIRECTORY(demo_HMMWV9)
+ADD_SUBDIRECTORY(demo_Autonom_Tract)
 ADD_SUBDIRECTORY(demo_HMMWV)
 ADD_SUBDIRECTORY(demo_HMMWV_Parallel)
 ADD_SUBDIRECTORY(demo_WheeledGeneric)

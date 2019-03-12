@@ -53,10 +53,10 @@ enum DriverMode { DEFAULT, RECORD, PLAYBACK };
 DriverMode driver_mode = DEFAULT;
 
 // Visualization type for vehicle parts (PRIMITIVES, MESH, or NONE)
-VisualizationType chassis_vis_type = VisualizationType::MESH;
+VisualizationType chassis_vis_type = VisualizationType::PRIMITIVES;
 VisualizationType suspension_vis_type = VisualizationType::PRIMITIVES;
 VisualizationType steering_vis_type = VisualizationType::PRIMITIVES;
-VisualizationType wheel_vis_type = VisualizationType::MESH;
+VisualizationType wheel_vis_type = VisualizationType::PRIMITIVES;
 
 // Collision type for chassis (PRIMITIVES, MESH, or NONE)
 ChassisCollisionType chassis_collision_type = ChassisCollisionType::NONE;
@@ -81,7 +81,7 @@ ChVector<> trackPoint(0.0, 0.0, 1.75);
 
 // Contact method
 ChMaterialSurface::ContactMethod contact_method = ChMaterialSurface::SMC;
-bool contact_vis = false;
+bool contact_vis = true;
 
 // Simulation step sizes
 double step_size = 1e-3;
@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
     my_sedan.SetVehicleStepSize(step_size);
     my_sedan.Initialize();
 
-    VisualizationType tire_vis_type = VisualizationType::MESH;// : VisualizationType::PRIMITIVES;
+    VisualizationType tire_vis_type = VisualizationType::PRIMITIVES;// : VisualizationType::PRIMITIVES;
 
     my_sedan.SetChassisVisualizationType(chassis_vis_type);
     my_sedan.SetSuspensionVisualizationType(suspension_vis_type);
