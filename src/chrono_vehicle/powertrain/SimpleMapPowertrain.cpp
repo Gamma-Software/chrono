@@ -122,8 +122,8 @@ void SimpleMapPowertrain::SetEngineTorqueMaps(ChFunction_Recorder& map0, ChFunct
 
 void SimpleMapPowertrain::SetShiftPoints(std::vector<std::pair<double, double>>& shift_bands) {
     for (unsigned int i = 0; i < m_shift_bands.m_n; i++) {
-        shift_bands.push_back(
-            std::make_pair<double, double>(rpm2rads * m_shift_bands.m_x[i], rpm2rads * m_shift_bands.m_y[i]));
+        /*shift_bands.push_back(
+            std::make_pair<double, double>(rpm2rads * m_shift_bands.m_x[i], rpm2rads * m_shift_bands.m_y[i]));*/
     }
 }
 

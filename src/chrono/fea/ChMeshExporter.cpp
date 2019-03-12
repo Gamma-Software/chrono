@@ -136,7 +136,7 @@ void ChMeshExporter::writeFrame(std::shared_ptr<ChMesh> my_mesh, char SaveAsBuff
     std::string SaveAsBuffer_string(SaveAsBuffer);
     SaveAsBuffer_string.erase(SaveAsBuffer_string.length() - 4, 4);
     std::cout << SaveAsBuffer_string << std::endl;
-    snprintf(SaveAsBuffer, sizeof(char) * 256, ("%s"), (SaveAsBuffer_string + ".vtk").c_str());
+    _snprintf(SaveAsBuffer, sizeof(char) * 256, ("%s"), (SaveAsBuffer_string + ".vtk").c_str());
     output.open(SaveAsBuffer, std::ios::app);
 
     output << "# vtk DataFile Version 2.0" << std::endl;
