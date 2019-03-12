@@ -70,8 +70,9 @@ void HMMWV_VehicleReduced::Create(bool fixed, ChassisCollisionType chassis_colli
     // -----------------------------
     // Create the steering subsystem
     // -----------------------------
-    m_steerings.resize(1);
+    m_steerings.resize(2);
     m_steerings[0] = std::make_shared<HMMWV_RackPinion>("Steering");
+    m_steerings[1] = std::make_shared<HMMWV_RackPinion>("Steering");
 
     // -----------------
     // Create the wheels
@@ -120,12 +121,14 @@ void HMMWV_VehicleReduced::Initialize(const ChCoordsys<>& chassisPos, double cha
     // relative to the chassis reference frame).
     ChVector<> offset = in2m * ChVector<>(56.735, 0, 3.174);
     m_steerings[0]->Initialize(m_chassis->GetBody(), offset, ChQuaternion<>(1, 0, 0, 0));
+    m_steerings[1]->Initialize(m_chassis->GetBody(), -offset, ChQuaternion<>(1, 0, 0, 0));
 
     // Initialize the suspension subsystems (specify the suspension subsystems'
     // frames relative to the chassis reference frame).
     m_suspensions[0]->Initialize(m_chassis->GetBody(), in2m * ChVector<>(66.59, 0, 1.039),
                                  m_steerings[0]->GetSteeringLink(), 0, m_omega[0], m_omega[1]);
-    m_suspensions[1]->Initialize(m_chassis->GetBody(), in2m * ChVector<>(-66.4, 0, 1.039), m_chassis->GetBody(), -1,
+    m_suspensions[1]->Initialize(m_chassis->GetBody(), in2m * ChVector<>(-66.4, 0, 1.039),
+                                 m_steerings[1]->GetSteeringLink(), 1,
                                  m_omega[2], m_omega[3]);
 
     // Initialize wheels
