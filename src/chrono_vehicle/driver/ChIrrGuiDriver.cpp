@@ -138,7 +138,7 @@ bool ChIrrGuiDriver::OnEvent(const SEvent& event) {
 
     if (event.KeyInput.PressedDown) {
         switch (event.KeyInput.Key) {
-            case KEY_KEY_A:
+            case KEY_KEY_Q:
                 if (m_mode == KEYBOARD)
                     m_steering_target = ChClamp(m_steering_target - m_steering_delta, -1.0, +1.0);
                 return true;
@@ -146,7 +146,7 @@ bool ChIrrGuiDriver::OnEvent(const SEvent& event) {
                 if (m_mode == KEYBOARD)
                     m_steering_target = ChClamp(m_steering_target + m_steering_delta, -1.0, +1.0);
                 return true;
-            case KEY_KEY_W:
+            case KEY_KEY_Z:
                 if (m_mode == KEYBOARD) {
                     m_throttle_target = ChClamp(m_throttle_target + m_throttle_delta, 0.0, +1.0);
                     if (m_throttle_target > 0)
@@ -183,15 +183,15 @@ bool ChIrrGuiDriver::OnEvent(const SEvent& event) {
                 }
                 return true;
 
-            case KEY_KEY_Z:
+            case KEY_KEY_A:
                 if (m_mode == KEYBOARD)
                     m_app.m_powertrain->SetDriveMode(ChPowertrain::FORWARD);
                 return true;
-            case KEY_KEY_X:
+            case KEY_KEY_E:
                 if (m_mode == KEYBOARD)
                     m_app.m_powertrain->SetDriveMode(ChPowertrain::NEUTRAL);
                 return true;
-            case KEY_KEY_C:
+            case KEY_KEY_R:
                 if (m_mode == KEYBOARD)
                     m_app.m_powertrain->SetDriveMode(ChPowertrain::REVERSE);
                 return true;
