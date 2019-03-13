@@ -1,37 +1,30 @@
 // =============================================================================
-// PROJECT CHRONO - http://projectchrono.org
-//
-// Copyright (c) 2014 projectchrono.org
-// All rights reserved.
-//
-// Use of this source code is governed by a BSD-style license that can be found
-// in the LICENSE file at the top level of the distribution and at
-// http://projectchrono.org/license-chrono.txt.
-//
-// =============================================================================
-// Authors: Alessandro Tasora
+// Authors: Rudloff Valentin
+// Used to read and send data over TCP/IP with RtMaps
 // =============================================================================
 
 #include <vector>
 
-#include "chrono_cosimulation/ChCosimulation.h"
+#include "chrono_cosimulation/RtmapsSocket.h"
 #include "chrono_cosimulation/ChExceptionSocket.h"
 
-namespace chrono {
-namespace cosimul {
+using namespace chrono::cosimul;
 
-ChCosimulation::ChCosimulation(ChSocketFramework& mframework,
+namespace chrono{
+namespace cosimul{
+
+RtmapsSocket::RtmapsSocket(ChSocketFramework& mframework,
                                int n_in_values,  /// number of scalar variables to receive each timestep
                                int n_out_values  /// number of scalar variables to send each timestep
                                ) {
     this->myServer = 0;
     this->myClient = 0;
-    this->in_n = n_in_values;
+    this->in_n = n_in_values*15;
     this->out_n = n_out_values;
     this->nport = 0;
 }
 
-ChCosimulation::~ChCosimulation() {
+RtmapsSocket::~RtmapsSocket() {
     if (this->myServer)
         delete this->myServer;
     this->myServer = 0;
@@ -40,7 +33,7 @@ ChCosimulation::~ChCosimulation() {
     this->myClient = 0;
 }
 
-bool ChCosimulation::WaitConnection(int aport) {
+bool RtmapsSocket::WaitConnection(int aport) {
     this->nport = aport;
 
     // a server is created, that could listen at a given port
@@ -62,7 +55,7 @@ bool ChCosimulation::WaitConnection(int aport) {
     return true;
 }
 
-bool ChCosimulation::SendData(double mtime, ChMatrix<double>* out_data) {
+bool RtmapsSocket::SendData(double mtime, ChMatrix<double>* out_data) {
     if (out_data->GetColumns() != 1)
         throw ChExceptionSocket(0, "Error. Sent data must be a matrix with 1 column");
     if (out_data->GetRows() != this->out_n)
@@ -87,7 +80,7 @@ bool ChCosimulation::SendData(double mtime, ChMatrix<double>* out_data) {
     return true;
 }
 
-bool ChCosimulation::ReceiveData(double& mtime, ChMatrix<double>* in_data) {
+bool RtmapsSocket::ReceiveData(double& mtime, ChMatrix<double>* in_data) {
     if (in_data->GetColumns() != 1)
         throw ChExceptionSocket(0, "Error. Received data must be a matrix with 1 column");
     if (in_data->GetRows() != this->in_n)
@@ -115,7 +108,7 @@ bool ChCosimulation::ReceiveData(double& mtime, ChMatrix<double>* in_data) {
     return true;
 }
 
-bool ChCosimulation::SendData(int mtime, ChMatrix<double>* out_data)
+bool RtmapsSocket::SendData(int mtime, ChMatrix<double>* out_data)
 {
     if (out_data->GetColumns() != 1)
         throw ChExceptionSocket(0, "Error. Sent data must be a matrix with 1 column");
@@ -141,7 +134,7 @@ bool ChCosimulation::SendData(int mtime, ChMatrix<double>* out_data)
     return true;
 }
 
-bool ChCosimulation::ReceiveData(int& mtime, ChMatrix<double>* in_data)
+bool RtmapsSocket::ReceiveData(int& mtime, ChMatrix<double>* in_data)
 {
     if (in_data->GetColumns() != 1)
         throw ChExceptionSocket(0, "Error. Received data must be a matrix with 1 column");
@@ -170,7 +163,7 @@ bool ChCosimulation::ReceiveData(int& mtime, ChMatrix<double>* in_data)
     return true;
 }
 
-bool ChCosimulation::SendData(int mtime, ChMatrix<int>* out_data)
+bool RtmapsSocket::SendData(int mtime, ChMatrix<int>* out_data)
 {
     if (out_data->GetColumns() != 1)
         throw ChExceptionSocket(0, "Error. Sent data must be a matrix with 1 column");
@@ -196,11 +189,12 @@ bool ChCosimulation::SendData(int mtime, ChMatrix<int>* out_data)
     return true;
 }
 
-bool ChCosimulation::ReceiveData(int& mtime, ChMatrix<int>* in_data)
+bool RtmapsSocket::ReceiveData(int& mtime, std::vector<int>& in_data)
 {
-    if (in_data->GetColumns() != 1)
+    ChMatrix<int>* data;
+    if (data->GetColumns() != 1)
         throw ChExceptionSocket(0, "Error. Received data must be a matrix with 1 column");
-    if (in_data->GetRows() != this->in_n)
+    if (data->GetRows() != this->in_n)
         throw ChExceptionSocket(0, "Error. Received data must be a matrix with N rows and 1 column");
     if (!myClient)
         throw ChExceptionSocket(0, "Error. Attempted 'ReceiveData' with no connected client.");
@@ -219,8 +213,20 @@ bool ChCosimulation::ReceiveData(int& mtime, ChMatrix<int>* in_data)
     // time:
     stream_in >> mtime;
     // variables:
-    for (int i = 0; i < in_data->GetRows(); i++)
-        stream_in >> in_data->Element(i, 0);
+    for (int i = 0; i < data->GetRows(); i++)
+        stream_in >> data->Element(i, 0);
+
+    int iteration = 0;
+    bool next_data = false;
+    do
+    {
+        in_data[iteration * 3] = data->GetElement(9 + 15 * iteration, 0);
+        in_data[iteration * 3 + 1] = data->GetElement(6 + 15 * iteration, 0);
+        in_data[iteration * 3 + 2] = data->GetElement(13 + 15 * iteration, 0);
+        next_data = (data->GetElement(14 + 15*iteration, 0) != 0 || iteration >= in_data.size()/3);
+        iteration++;
+    } while (next_data);
+
 
     return true;
 }

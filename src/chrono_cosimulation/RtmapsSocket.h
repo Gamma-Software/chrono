@@ -35,15 +35,16 @@ namespace cosimul {
 /// In this case, C::E will work as a server, waiting for
 /// a client to talk with.
 
-class ChApiCosimulation ChCosimulation {
+class ChApiCosimulation RtmapsSocket
+{
   public:
     /// Create a co-simulation interface.
-    ChCosimulation(ChSocketFramework& mframework,  ///< socket framework
+    RtmapsSocket(ChSocketFramework& mframework,  ///< socket framework
                    int n_in_values,                ///< number of scalar variables to receive each timestep
                    int n_out_values                ///< number of scalar variables to send each timestep
     );
 
-    ~ChCosimulation();
+    ~RtmapsSocket();
 
     /// Wait for a client to connect to the interface,
     /// on a given port, and wait until not connected.
@@ -54,41 +55,41 @@ class ChApiCosimulation ChCosimulation {
     /// vector of floating point values over TCP socket
     /// connection (values are double precision, little endian, 4 bytes each)
     /// Simulator actual time is also passed as first value.
-    bool SendData(double mtime, ChMatrix<double>* mdata);
+    bool SendData(double mtime, chrono::ChMatrix<double>* mdata);
 
     /// Exchange data with the client, by receiving a
     /// vector of floating point values over TCP socket
     /// connection (values are double precision, little endian, 4 bytes each)
     /// External time is also received as first value.
-    bool ReceiveData(double& mtime, ChMatrix<double>* mdata);
+    bool ReceiveData(double& mtime, chrono::ChMatrix<double>* mdata);
 
     /// Exchange data with the client, by sending a
     /// vector of floating point values over TCP socket
     /// connection (values are double precision, little endian, 4 bytes each)
     /// Simulator actual time is also passed as first value.
-    bool SendData(int mtime, ChMatrix<double>* mdata);
+    bool SendData(int mtime, chrono::ChMatrix<double>* mdata);
 
     /// Exchange data with the client, by receiving a
     /// vector of floating point values over TCP socket
     /// connection (values are double precision, little endian, 4 bytes each)
     /// External time is also received as first value.
-    bool ReceiveData(int& mtime, ChMatrix<double>* mdata);
+    bool ReceiveData(int& mtime, chrono::ChMatrix<double>* mdata);
 
     /// Exchange data with the client, by sending a
     /// vector of floating point values over TCP socket
     /// connection (values are double precision, little endian, 4 bytes each)
     /// Simulator actual time is also passed as first value.
-    bool SendData(int mtime, ChMatrix<int>* mdata);
+    bool SendData(int mtime, chrono::ChMatrix<int>* mdata);
 
     /// Exchange data with the client, by receiving a
     /// vector of floating point values over TCP socket
     /// connection (values are double precision, little endian, 4 bytes each)
     /// External time is also received as first value.
-    bool ReceiveData(int& mtime, ChMatrix<int>* mdata);
+    bool ReceiveData(int& mtime,std::vector<int>& mdata);
 
   private:
-    ChSocketTCP* myServer;
-    ChSocketTCP* myClient;
+    chrono::cosimul::ChSocketTCP* myServer;
+    chrono::cosimul::ChSocketTCP* myClient;
     int nport;
 
     int in_n;
