@@ -25,6 +25,7 @@ SET(ChronoEngine_COSIMULATION_SOURCES
     ChSocket.cpp
     ChSocketFramework.cpp
     ChCosimulation.cpp
+    RtmapsSocket.cpp
 )
 
 SET(ChronoEngine_COSIMULATION_HEADERS
@@ -34,6 +35,7 @@ SET(ChronoEngine_COSIMULATION_HEADERS
     ChSocket.h
     ChSocketFramework.h
     ChCosimulation.h
+    RtmapsSocket.h
 )
 
 SOURCE_GROUP("" FILES 

@@ -31,5 +31,6 @@ TARGET_LINK_LIBRARIES(${DEMO}
                       ChronoEngine
                       ChronoEngine_irrlicht
                       ChronoEngine_vehicle
-                      ChronoModels_vehicle)
+                      ChronoModels_vehicle
+                      ChronoEngine_cosimulation)
 INSTALL(TARGETS ${DEMO} DESTINATION ${CH_INSTALL_DEMO})

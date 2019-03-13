@@ -19,6 +19,7 @@
 //
 // =============================================================================
 
+
 #include "chrono/core/ChStream.h"
 #include "chrono/core/ChRealtimeStep.h"
 #include "chrono/utils/ChUtilsInputOutput.h"
@@ -26,25 +27,28 @@
 #include "chrono_vehicle/ChConfigVehicle.h"
 #include "chrono_vehicle/ChVehicleModelData.h"
 #include "chrono_vehicle/terrain/RigidTerrain.h"
+
 #include "chrono_vehicle/driver/ChIrrGuiDriver.h"
+
 #include "chrono_vehicle/output/ChVehicleOutputASCII.h"
 
 #include "chrono_vehicle/wheeled_vehicle/utils/ChWheeledVehicleIrrApp.h"
 
 #include "chrono_models/vehicle/hmmwv/HMMWV.h"
 
+#include "chrono/core/ChMatrixDynamic.h"
+#include "chrono_cosimulation/ChCosimulation.h"
+#include "chrono_cosimulation/ChExceptionSocket.h"
+#include "chrono_vehicle/utils/ChSpeedController.h"
+
 
 #include "chrono/physics/ChBodyEasy.h"
-
-//#include "chrono_cosimulation/ChCosimulation.h"
-//#include "chrono_cosimulation/ChExceptionSocket.h"
 
 #include "chrono_thirdparty/filesystem/path.h"
 
 using namespace chrono;
 using namespace chrono::vehicle;
 using namespace chrono::vehicle::hmmwv;
-//using namespace chrono::cosimul;
 
 // =============================================================================
 
@@ -79,22 +83,32 @@ bool enforce_soft_real_time = true;
 int FPS = 50;
 double render_step_size = 1.0 / FPS;  // FPS = 50
 
+int input_nb = 1;
+ChMatrixDynamic<int> data_in(input_nb * 15, 1);
+double data;
+ChMatrixDynamic<int> data_out(1, 1);
+
 // POV-Ray output
 bool povray_output = false;
 const std::string out_dir = GetChronoOutputPath() + "HMMWV9";
 const std::string pov_dir = out_dir + "/POVRAY";
 
+ChSpeedController m_speedPID;
+
 // =============================================================================
 
 int main(int argc, char* argv[]) {
     GetLog() << "Copyright (c) 2017 projectchrono.org\nChrono version: " << CHRONO_VERSION << "\n\n";
+    chrono::cosimul::ChSocketFramework socket_tools;
+    chrono::cosimul::ChCosimulation cosimul_interface(socket_tools,
+        input_nb * 15,   // n.input values from Simulink
+        1);
 
-    //ChSocketFramework socket_tools;
-    /*ChCosimulation cosimul_interface(socket_tools, 1, 1);
-    ChMatrixDynamic<double> data_in(1, 1);
-    ChMatrixDynamic<double> data_out(1, 1);
+    GetLog() << " *** Waiting Simulink to start... *** \n     (load 'data/cosimulation/test_cosimulation.mdl' in "
+        "Simulink and press Start...)\n\n";
+
     int PORTNUM = 50009;
-    cosimul_interface.WaitConnection(PORTNUM);*/
+    cosimul_interface.WaitConnection(PORTNUM);
 
 
     // --------------
@@ -112,6 +126,9 @@ int main(int argc, char* argv[]) {
     my_hmmwv.SetTireStepSize(tire_step_size);
     my_hmmwv.SetVehicleStepSize(step_size);
     my_hmmwv.Initialize();
+
+    m_speedPID.Reset(my_hmmwv.GetVehicle());
+    m_speedPID.SetGains(1., 0., 0.);
 
     my_hmmwv.SetChassisVisualizationType(VisualizationType::PRIMITIVES);
     my_hmmwv.SetSuspensionVisualizationType(VisualizationType::PRIMITIVES);
@@ -175,7 +192,7 @@ int main(int argc, char* argv[]) {
 
     auto left_trailor_wheel_body = std::make_shared<ChBodyEasyCylinder>(0.3, 0.1, 1, true);
     left_trailor_wheel_body->SetPos(trailor->GetPos() - ChVector<>(0., 0.7 / 2 + 0.1 / 2, 0.));
-    left_trailor_wheel_body->GetMaterialSurfaceNSC()->SetRollingFriction(1.f); 
+    left_trailor_wheel_body->GetMaterialSurfaceNSC()->SetRollingFriction(1.f);
     my_hmmwv.GetSystem()->Add(left_trailor_wheel_body);
 
     // Link it to the Attach point
@@ -183,7 +200,7 @@ int main(int argc, char* argv[]) {
     left_wheel_link->Initialize(trailor, left_trailor_wheel_body, ChCoordsys<>(trailor->GetPos(), Q_from_AngY(0.)));
     my_hmmwv.GetSystem()->AddLink(left_wheel_link);
 
-    
+
     //auto right_trailor_wheel = std::make_shared<ChWheel>("right_trailor");
     auto right_trailor_wheel_body = std::make_shared<ChBodyEasyCylinder>(0.3, 0.1, 1, true);
     right_trailor_wheel_body->SetPos(trailor->GetPos() + ChVector<>(0., 0.7 / 2 + 0.1 / 2, 0.));
@@ -219,6 +236,7 @@ int main(int argc, char* argv[]) {
 
     // Create the interactive driver system
     ChIrrGuiDriver driver(app);
+    driver.SetInputMode(ChIrrGuiDriver::KEYBOARD);
     driver.Initialize();
 
     // Set the time response for steering and throttle keyboard inputs.
@@ -270,7 +288,26 @@ int main(int argc, char* argv[]) {
     // Driver location in vehicle local frame
     ChVector<> driver_pos = my_hmmwv.GetChassis()->GetLocalDriverCoordsys().pos;
 
+    int histime = 0;
+    double m_throttle = 0;
+    double m_brake = 0;
     while (app.GetDevice()->run()) {
+        // Receive data from Rtmaps
+        if (cosimul_interface.ReceiveData(histime, &data_in))
+        {
+            int iteration = 0;
+            bool next_data = false;
+            do
+            {
+                histime = data_in(9 + 15 * iteration);
+                data = data_in(13 + 15 * iteration);
+                //GetLog() << "--- synchronization at time: " << histime << "\n\n";
+                GetLog() << "value " << data/100 << "\n";
+                next_data = data_in(14 + 15 * iteration) != 0;
+                iteration++;
+            } while (next_data);
+        }
+
         time = my_hmmwv.GetSystem()->GetChTime();
         app.BeginScene(true, true, irr::video::SColor(255, 140, 161, 192));
         app.DrawAll();
@@ -284,19 +321,19 @@ int main(int argc, char* argv[]) {
         }
 
         // Collect output data from modules (for inter-module communication)
-        double throttle_input = driver.GetThrottle();
+        //double throttle_input = driver.GetThrottle();
         double steering_input = driver.GetSteering();
-        double braking_input = driver.GetBraking();
+        //double braking_input = driver.GetBraking();
 
-        /*data_out(0) = throttle_input;
-        cosimul_interface.SendData(time, &data_out);*/
+        //data_out = throttle_input;
+        //cosimul_interface.SendData(time, &data_out);
 
         // Update modules (process inputs from other modules)
         driver.Synchronize(time);
         terrain.Synchronize(time);
-        my_hmmwv.Synchronize(time, steering_input, braking_input, throttle_input, terrain);
+        my_hmmwv.Synchronize(time, steering_input, m_brake, m_throttle, terrain);
         //trailor.Synchronize(time, 0., 0., 0., terrain);
-        app.Synchronize(driver.GetInputModeAsString(), steering_input, throttle_input, braking_input);
+        app.Synchronize(driver.GetInputModeAsString(), steering_input, m_throttle, m_brake);
 
         // Advance simulation for one timestep for all modules
         double step = enforce_soft_real_time ? realtime_timer.SuggestSimulationStep(step_size) : step_size;
@@ -304,6 +341,30 @@ int main(int argc, char* argv[]) {
         terrain.Advance(step);
         my_hmmwv.Advance(step);
         //trailor.Advance(step);
+        double out_speed = m_speedPID.Advance(my_hmmwv.GetVehicle(), data/100, step);
+        ChClampValue(out_speed, -1.0, 1.0);
+
+        GetLog() << "current speed" << my_hmmwv.GetVehicle().GetVehicleSpeed() << "\n";
+        GetLog() << "outspeed " << out_speed << "\n";
+
+        if (out_speed > 0)
+        {
+            // Vehicle moving too slow
+            m_brake = 0;
+            m_throttle = out_speed;
+        }
+        else if (m_throttle > 0.2)
+        {
+            // Vehicle moving too fast: reduce throttle
+            m_brake = 0;
+            m_throttle = 1 + out_speed;
+        }
+        else
+        {
+            // Vehicle moving too fast: apply brakes
+            m_brake = -out_speed;
+            m_throttle = 0;
+        }
         app.Advance(step);
 
         // Increment frame number

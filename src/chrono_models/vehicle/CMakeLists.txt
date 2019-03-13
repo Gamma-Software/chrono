@@ -71,60 +71,60 @@ set(CVM_HMMWV_FILES
 )
 source_group("hmmwv" FILES ${CVM_HMMWV_FILES})
 
-set(CVM_TRACT_FILES
-    tract/Tract.cpp
-    tract/Tract.h
-    tract/Tract_BrakeSimple.cpp
-    tract/Tract_BrakeSimple.h
-    tract/Tract_Chassis.h
-    tract/Tract_Chassis.cpp
-    tract/Tract_DoubleWishbone.cpp
-    tract/Tract_DoubleWishbone.h
-    tract/Tract_DoubleWishboneReduced.cpp
-    tract/Tract_DoubleWishboneReduced.h
-    tract/Tract_Driveline2WD.cpp
-    tract/Tract_Driveline2WD.h
-    tract/Tract_Driveline4WD.cpp
-    tract/Tract_Driveline4WD.h
-    tract/Tract_RigidTire.cpp
-    tract/Tract_RigidTire.h
-    tract/Tract_FialaTire.cpp
-    tract/Tract_FialaTire.h
-    tract/Tract_LugreTire.cpp
-    tract/Tract_LugreTire.h
-    tract/Tract_Pac02Tire.cpp
-    tract/Tract_Pac02Tire.h
-    tract/Tract_Pac89Tire.cpp
-    tract/Tract_Pac89Tire.h
-    tract/Tract_TMeasyTire.cpp
-    tract/Tract_TMeasyTire.h
-    tract/Tract_ANCFTire.cpp
-    tract/Tract_ANCFTire.h
-    tract/Tract_ReissnerTire.cpp
-    tract/Tract_ReissnerTire.h
-    tract/Tract_PitmanArm.cpp
-    tract/Tract_PitmanArm.h
-    tract/Tract_PitmanArmShafts.cpp
-    tract/Tract_PitmanArmShafts.h
-    tract/Tract_Powertrain.cpp
-    tract/Tract_Powertrain.h
-    tract/Tract_RackPinion.cpp
-    tract/Tract_RackPinion.h
-    tract/Tract_SimpleDriveline.cpp
-    tract/Tract_SimpleDriveline.h
-    tract/Tract_SimplePowertrain.cpp
-    tract/Tract_SimplePowertrain.h
-    tract/Tract_SimpleMapPowertrain.cpp
-    tract/Tract_SimpleMapPowertrain.h
-    tract/Tract_Vehicle.h
-    tract/Tract_VehicleFull.cpp
-    tract/Tract_VehicleFull.h
-    tract/Tract_VehicleReduced.cpp
-    tract/Tract_VehicleReduced.h
-    tract/Tract_Wheel.cpp
-    tract/Tract_Wheel.h
-)
-source_group("tract" FILES ${CVM_TRACT_FILES})
+# set(CVM_TRACT_FILES=
+    # tract/Tract.cpp
+    # tract/Tract.h
+    # tract/Tract_BrakeSimple.cpp
+    # tract/Tract_BrakeSimple.h
+    # tract/Tract_Chassis.h
+    # tract/Tract_Chassis.cpp
+    # tract/Tract_DoubleWishbone.cpp
+    # tract/Tract_DoubleWishbone.h
+    # tract/Tract_DoubleWishboneReduced.cpp
+    # tract/Tract_DoubleWishboneReduced.h
+    # tract/Tract_Driveline2WD.cpp
+    # tract/Tract_Driveline2WD.h
+    # tract/Tract_Driveline4WD.cpp
+    # tract/Tract_Driveline4WD.h
+    # tract/Tract_RigidTire.cpp
+    # tract/Tract_RigidTire.h
+    # tract/Tract_FialaTire.cpp
+    # tract/Tract_FialaTire.h
+    # tract/Tract_LugreTire.cpp
+    # tract/Tract_LugreTire.h
+    # tract/Tract_Pac02Tire.cpp
+    # tract/Tract_Pac02Tire.h
+    # tract/Tract_Pac89Tire.cpp
+    # tract/Tract_Pac89Tire.h
+    # tract/Tract_TMeasyTire.cpp
+    # tract/Tract_TMeasyTire.h
+    # tract/Tract_ANCFTire.cpp
+    # tract/Tract_ANCFTire.h
+    # tract/Tract_ReissnerTire.cpp
+    # tract/Tract_ReissnerTire.h
+    # tract/Tract_PitmanArm.cpp
+    # tract/Tract_PitmanArm.h
+    # tract/Tract_PitmanArmShafts.cpp
+    # tract/Tract_PitmanArmShafts.h
+    # tract/Tract_Powertrain.cpp
+    # tract/Tract_Powertrain.h
+    # tract/Tract_RackPinion.cpp
+    # tract/Tract_RackPinion.h
+    # tract/Tract_SimpleDriveline.cpp
+    # tract/Tract_SimpleDriveline.h
+    # tract/Tract_SimplePowertrain.cpp
+    # tract/Tract_SimplePowertrain.h
+    # tract/Tract_SimpleMapPowertrain.cpp
+    # tract/Tract_SimpleMapPowertrain.h
+    # tract/Tract_Vehicle.h
+    # tract/Tract_VehicleFull.cpp
+    # tract/Tract_VehicleFull.h
+    # tract/Tract_VehicleReduced.cpp
+    # tract/Tract_VehicleReduced.h
+    # tract/Tract_Wheel.cpp
+    # tract/Tract_Wheel.h
+# )
+# source_group("tract" FILES ${CVM_TRACT_FILES})
 
 set(CVM_UAZ_FILES
     uaz/UAZBUS.cpp
@@ -317,7 +317,7 @@ endif()
 add_library(ChronoModels_vehicle SHARED
     ${CVM_COMMON_FILES}
     ${CVM_HMMWV_FILES}
-    ${CVM_TRACT_FILES}
+    #${CVM_TRACT_FILES}
     ${CVM_UAZ_FILES}
     ${CVM_GENERIC_FILES}
     ${CVM_SEDAN_FILES}
