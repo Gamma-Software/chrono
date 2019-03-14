@@ -103,6 +103,8 @@ set(CVM_TRACT_FILES
     tract/Tract_VehicleReduced.h
     tract/Tract_Wheel.cpp
     tract/Tract_Wheel.h
+    tract/Tract_LeafspringAxle.cpp
+    tract/Tract_LeafspringAxle.h
 )
 source_group("tract" FILES ${CVM_TRACT_FILES})
 

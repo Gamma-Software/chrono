@@ -59,7 +59,8 @@ void Tract_VehicleReduced::Create(bool fixed, ChassisCollisionType chassis_colli
     // Create the chassis subsystem
     // -------------------------------------------
     ChassisData chassis_data;
-    chassis_data.mass
+    chassis_data.mass = 4215.;
+    chassis_data.driverCsys = ChCoordsys<>(ChVector<>(0.8, 0., 0.805), ChQuaternion<>(1, 0, 0, 0));
     m_chassis = std::make_shared<Tract_Chassis>("Chassis", ChassisData(), fixed, chassis_collision_type);
 
     // -------------------------------------------
