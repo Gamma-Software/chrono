@@ -30,19 +30,27 @@ namespace chrono {
 namespace vehicle {
 namespace tract {
 
+struct WheelData
+{
+    double mass = 18.8;
+    double radius = 0.39;
+    double width = 0.22;
+    ChVector<> inertia = ChVector<>(0.113, 0.113, 0.113);
+};
+
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// HMMWV wheel base class.
 class CH_MODELS_API Tract_Wheel : public ChWheel {
   public:
-    Tract_Wheel(const std::string& name, double wheel_radius);
+    Tract_Wheel(const std::string& name, const WheelData& data);
     ~Tract_Wheel() {}
 
-    virtual double GetMass() const override { return m_mass; }
-    virtual ChVector<> GetInertia() const override { return m_inertia; }
-    virtual double GetRadius() const override { return m_radius; }
-    virtual double GetWidth() const override { return m_width; }
+    virtual double GetMass() const override { return m_data.mass; }
+    virtual ChVector<> GetInertia() const override { return m_data.inertia; }
+    virtual double GetRadius() const override { return m_data.radius; }
+    virtual double GetWidth() const override { return m_data.width; }
 
     virtual void AddVisualizationAssets(VisualizationType vis) override;
     virtual void RemoveVisualizationAssets() override;
@@ -50,10 +58,7 @@ class CH_MODELS_API Tract_Wheel : public ChWheel {
   protected:
     std::shared_ptr<ChTriangleMeshShape> m_trimesh_shape;
 
-    double m_radius;
-    static const double m_width;
-    static const double m_mass;
-    static const ChVector<> m_inertia;
+    WheelData m_data;
 };
 
 /// @} vehicle_models_hmmwv

@@ -58,7 +58,9 @@ void Tract_VehicleReduced::Create(bool fixed, ChassisCollisionType chassis_colli
     // -------------------------------------------
     // Create the chassis subsystem
     // -------------------------------------------
-    m_chassis = std::make_shared<Tract_Chassis>("Chassis", fixed, chassis_collision_type);
+    ChassisData chassis_data;
+    chassis_data.mass
+    m_chassis = std::make_shared<Tract_Chassis>("Chassis", ChassisData(), fixed, chassis_collision_type);
 
     // -------------------------------------------
     // Create the suspension subsystems
@@ -77,10 +79,15 @@ void Tract_VehicleReduced::Create(bool fixed, ChassisCollisionType chassis_colli
     // Create the wheels
     // -----------------
     m_wheels.resize(4);
-    m_wheels[0] = std::make_shared<Tract_Wheel>("Wheel_FL", 0.4);
-    m_wheels[1] = std::make_shared<Tract_Wheel>("Wheel_FR", 0.4);
-    m_wheels[2] = std::make_shared<Tract_Wheel>("Wheel_RL", 0.2);
-    m_wheels[3] = std::make_shared<Tract_Wheel>("Wheel_RR", 0.4);
+    WheelData wheel_data;
+    wheel_data.radius = 45.72/2;
+    wheel_data.width = 15.24;
+    m_wheels[0] = std::make_shared<Tract_Wheel>("Wheel_FL", wheel_data);
+    m_wheels[1] = std::make_shared<Tract_Wheel>("Wheel_FR", wheel_data);
+    wheel_data.radius = 60.96 / 2;
+    wheel_data.width = 17.78;
+    m_wheels[2] = std::make_shared<Tract_Wheel>("Wheel_RL", wheel_data);
+    m_wheels[3] = std::make_shared<Tract_Wheel>("Wheel_RR", wheel_data);
 
     // --------------------
     // Create the driveline
@@ -90,7 +97,7 @@ void Tract_VehicleReduced::Create(bool fixed, ChassisCollisionType chassis_colli
             m_driveline = std::make_shared<Tract_Driveline2WD>("Driveline");
             break;
         case DrivelineType::SIMPLE:
-            m_driveline = std::make_shared<Tract_SimpleDriveline>("Driveline");
+            m_driveline = std::make_shared<Tract_SimpleDriveline>("Driveline", DriveLineData());
             break;
     }
 
@@ -98,10 +105,10 @@ void Tract_VehicleReduced::Create(bool fixed, ChassisCollisionType chassis_colli
     // Create the brakes
     // -----------------
     m_brakes.resize(4);
-    m_brakes[0] = std::make_shared<Tract_BrakeSimple>("Brake_FL");
-    m_brakes[1] = std::make_shared<Tract_BrakeSimple>("Brake_FR");
-    m_brakes[2] = std::make_shared<Tract_BrakeSimple>("Brake_RL");
-    m_brakes[3] = std::make_shared<Tract_BrakeSimple>("Brake_RR");
+    m_brakes[0] = std::make_shared<Tract_BrakeSimple>("Brake_FL", BrakeData());
+    m_brakes[1] = std::make_shared<Tract_BrakeSimple>("Brake_FR", BrakeData());
+    m_brakes[2] = std::make_shared<Tract_BrakeSimple>("Brake_RL", BrakeData());
+    m_brakes[3] = std::make_shared<Tract_BrakeSimple>("Brake_RR", BrakeData());
 }
 
 Tract_VehicleReduced::~Tract_VehicleReduced() {}

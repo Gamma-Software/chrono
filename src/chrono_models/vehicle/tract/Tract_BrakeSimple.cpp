@@ -23,14 +23,8 @@ namespace vehicle {
 namespace tract {
 
 // -----------------------------------------------------------------------------
-// Static variables
 // -----------------------------------------------------------------------------
-
-const double Tract_BrakeSimple::m_maxtorque = 4000;
-
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-Tract_BrakeSimple::Tract_BrakeSimple(const std::string& name) : ChBrakeSimple(name) {}
+Tract_BrakeSimple::Tract_BrakeSimple(const std::string& name, const BrakeData& data) : ChBrakeSimple(name), m_data(data) {}
 
 }  // end namespace hmmwv
 }  // end namespace vehicle

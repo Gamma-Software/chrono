@@ -27,17 +27,8 @@ namespace vehicle {
 namespace tract {
 
 // -----------------------------------------------------------------------------
-// Static variables
 // -----------------------------------------------------------------------------
-
-const double Tract_Wheel::m_mass = 18.8;
-const ChVector<> Tract_Wheel::m_inertia(0.113, 0.113, 0.113);
-
-const double Tract_Wheel::m_width = 0.22;
-
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-Tract_Wheel::Tract_Wheel(const std::string& name, double radius) : ChWheel(name), m_radius(radius) {}
+Tract_Wheel::Tract_Wheel(const std::string& name, const WheelData& data) : ChWheel(name), m_data(data){}
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------

@@ -25,14 +25,11 @@ namespace tract {
 // -----------------------------------------------------------------------------
 // Static variables
 // -----------------------------------------------------------------------------
-const double Tract_SimpleDriveline::m_front_torque_frac = 0.5;
-const double Tract_SimpleDriveline::m_front_diff_bias = 2.0;
-const double Tract_SimpleDriveline::m_rear_diff_bias = 2.0;
 
 // -----------------------------------------------------------------------------
 // Constructor of HMMWV_SimpleDriveline.
 // -----------------------------------------------------------------------------
-Tract_SimpleDriveline::Tract_SimpleDriveline(const std::string& name) : ChSimpleDriveline(name) {}
+Tract_SimpleDriveline::Tract_SimpleDriveline(const std::string& name, const DriveLineData& data) : ChSimpleDriveline(name), m_data(data) {}
 
 }  // end namespace hmmwv
 }  // end namespace vehicle

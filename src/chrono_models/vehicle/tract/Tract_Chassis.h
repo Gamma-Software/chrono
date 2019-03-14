@@ -28,6 +28,16 @@ namespace chrono {
 namespace vehicle {
 namespace tract {
 
+struct ChassisData
+{
+    double mass = 2086.52;
+    ChMatrix33<> inertia = ChMatrix33<>(0.);
+    ChVector<> inertiaXX = ChVector<>(1078.52, 2955.66, 3570.20);
+    ChVector<> inertiaXY = ChVector<>(0, 0, 0);
+    ChVector<> COM_loc = ChVector<>(0.056, 0, 0.523);
+    ChCoordsys<> driverCsys = ChCoordsys<>(ChVector<>(0.87, -0.27, 1.05), ChQuaternion<>(1, 0, 0, 0));
+};
+
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
@@ -35,31 +45,26 @@ namespace tract {
 class CH_MODELS_API Tract_Chassis : public ChRigidChassis {
   public:
     Tract_Chassis(const std::string& name,
+                  const ChassisData& data,
                   bool fixed = false,
                   ChassisCollisionType chassis_collision_type = ChassisCollisionType::NONE);
     ~Tract_Chassis() {}
 
     /// Return the mass of the chassis body.
-    virtual double GetMass() const override { return m_mass; }
-  
+    virtual double GetMass() const override { return m_data.mass; }
+
     /// Return the inertia tensor of the chassis body.
-    virtual const ChMatrix33<>& GetInertia() const override { return m_inertia; }
-  
+    virtual const ChMatrix33<>& GetInertia() const override { return m_data.inertia; }
+
     /// Get the location of the center of mass in the chassis frame.
-    virtual const ChVector<>& GetLocalPosCOM() const override { return m_COM_loc; }
+    virtual const ChVector<>& GetLocalPosCOM() const override { return m_data.COM_loc; }
 
     /// Get the local driver position and orientation.
     /// This is a coordinate system relative to the chassis reference frame.
-    virtual ChCoordsys<> GetLocalDriverCoordsys() const override { return m_driverCsys; }
+    virtual ChCoordsys<> GetLocalDriverCoordsys() const override { return m_data.driverCsys; }
 
   protected:
-    ChMatrix33<> m_inertia;
-
-    static const double m_mass;
-    static const ChVector<> m_inertiaXX;
-    static const ChVector<> m_inertiaXY;
-    static const ChVector<> m_COM_loc;
-    static const ChCoordsys<> m_driverCsys;
+    ChassisData m_data;
 };
 
 /// @} vehicle_models_hmmwv

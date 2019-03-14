@@ -26,19 +26,25 @@ namespace chrono {
 namespace vehicle {
 namespace tract {
 
+
+struct BrakeData
+{
+    double maxtorque = 4000;
+};
+
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// Simple HMMWV brake subsystem (torque applied directly to the spindle joint).
 class CH_MODELS_API Tract_BrakeSimple : public ChBrakeSimple {
   public:
-    Tract_BrakeSimple(const std::string& name);
+    Tract_BrakeSimple(const std::string& name, const BrakeData& data);
     virtual ~Tract_BrakeSimple() {}
 
-    virtual double GetMaxBrakingTorque() override { return m_maxtorque; }
+    virtual double GetMaxBrakingTorque() override { return m_data.maxtorque; }
 
   private:
-    static const double m_maxtorque;
+    BrakeData m_data;
 };
 
 /// @} vehicle_models_hmmwv

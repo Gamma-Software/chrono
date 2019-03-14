@@ -30,26 +30,23 @@ namespace tract {
 // -----------------------------------------------------------------------------
 // Static variables
 // -----------------------------------------------------------------------------
-const double Tract_Chassis::m_mass = 2086.52;
-const ChVector<> Tract_Chassis::m_inertiaXX(1078.52, 2955.66, 3570.20);
-const ChVector<> Tract_Chassis::m_inertiaXY(0, 0, 0);
-const ChVector<> Tract_Chassis::m_COM_loc(0.056, 0, 0.523);
-const ChCoordsys<> Tract_Chassis::m_driverCsys(ChVector<>(0.87, -0.27, 1.05), ChQuaternion<>(1, 0, 0, 0));
+
+
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-Tract_Chassis::Tract_Chassis(const std::string& name, bool fixed, ChassisCollisionType chassis_collision_type)
-    : ChRigidChassis(name, fixed) {
-    m_inertia.SetElement(0, 0, m_inertiaXX.x());
-    m_inertia.SetElement(1, 1, m_inertiaXX.y());
-    m_inertia.SetElement(2, 2, m_inertiaXX.z());
+Tract_Chassis::Tract_Chassis(const std::string& name, const ChassisData& data, bool fixed, ChassisCollisionType chassis_collision_type)
+    : ChRigidChassis(name, fixed), m_data(data) {
+    m_data.inertia.SetElement(0, 0, m_data.inertiaXX.x());
+    m_data.inertia.SetElement(1, 1, m_data.inertiaXX.y());
+    m_data.inertia.SetElement(2, 2, m_data.inertiaXX.z());
 
-    m_inertia.SetElement(0, 1, m_inertiaXY.x());
-    m_inertia.SetElement(0, 2, m_inertiaXY.y());
-    m_inertia.SetElement(1, 2, m_inertiaXY.z());
-    m_inertia.SetElement(1, 0, m_inertiaXY.x());
-    m_inertia.SetElement(2, 0, m_inertiaXY.y());
-    m_inertia.SetElement(2, 1, m_inertiaXY.z());
+    m_data.inertia.SetElement(0, 1, m_data.inertiaXY.x());
+    m_data.inertia.SetElement(0, 2, m_data.inertiaXY.y());
+    m_data.inertia.SetElement(1, 2, m_data.inertiaXY.z());
+    m_data.inertia.SetElement(1, 0, m_data.inertiaXY.x());
+    m_data.inertia.SetElement(2, 0, m_data.inertiaXY.y());
+    m_data.inertia.SetElement(2, 1, m_data.inertiaXY.z());
 
     //// TODO:
     //// A more appropriate contact shape from primitives

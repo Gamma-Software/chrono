@@ -26,24 +26,30 @@ namespace chrono {
 namespace vehicle {
 namespace tract {
 
+
+struct DriveLineData
+{
+    double front_torque_frac = 0.5;
+    double front_diff_bias = 2.0;
+    double rear_diff_bias = 2.0;
+};
+
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// Simple HMMWV driveline subsystem (purely kinematic).
 class CH_MODELS_API Tract_SimpleDriveline : public ChSimpleDriveline {
   public:
-    Tract_SimpleDriveline(const std::string& name);
+    Tract_SimpleDriveline(const std::string& name, const DriveLineData& data);
 
     ~Tract_SimpleDriveline() {}
 
-    virtual double GetFrontTorqueFraction() const override { return m_front_torque_frac; }
-    virtual double GetFrontDifferentialMaxBias() const override { return m_front_diff_bias; }
-    virtual double GetRearDifferentialMaxBias() const override { return m_rear_diff_bias; }
+    virtual double GetFrontTorqueFraction() const override { return m_data.front_torque_frac; }
+    virtual double GetFrontDifferentialMaxBias() const override { return m_data.front_diff_bias; }
+    virtual double GetRearDifferentialMaxBias() const override { return m_data.rear_diff_bias; }
 
   private:
-    static const double m_front_torque_frac;
-    static const double m_front_diff_bias;
-    static const double m_rear_diff_bias;
+      DriveLineData m_data;
 };
 
 /// @} vehicle_models_hmmwv
