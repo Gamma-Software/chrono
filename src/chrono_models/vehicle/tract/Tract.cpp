@@ -36,8 +36,8 @@ Tract::Tract()
       m_contactMethod(ChMaterialSurface::NSC),
       m_chassisCollisionType(ChassisCollisionType::NONE),
       m_fixed(false),
-      m_driveType(DrivelineType::RWD),
-      m_powertrainType(PowertrainModelType::SIMPLE_MAP),
+      m_driveType(DrivelineType::RWD	),
+      m_powertrainType(PowertrainModelType::SIMPLE),
       m_tireType(TireModelType::RIGID),
       m_vehicle_step_size(-1),
       m_tire_step_size(-1),
@@ -55,7 +55,7 @@ Tract::Tract(ChSystem* system)
       m_chassisCollisionType(ChassisCollisionType::NONE),
       m_fixed(false),
       m_driveType(DrivelineType::RWD),
-      m_powertrainType(PowertrainModelType::SIMPLE_MAP),
+      m_powertrainType(PowertrainModelType::SIMPLE),
       m_tireType(TireModelType::RIGID),
       m_vehicle_step_size(-1),
       m_tire_step_size(-1),
@@ -100,11 +100,6 @@ void Tract::Initialize() {
 
     // Create and initialize the powertrain system
     switch (m_powertrainType) {
-        case PowertrainModelType::SHAFTS: {
-            Tract_Powertrain* ptrain = new Tract_Powertrain("Powertrain");
-            m_powertrain = ptrain;
-            break;
-        }
         case PowertrainModelType::SIMPLE_MAP: {
             Tract_SimpleMapPowertrain* ptrain = new Tract_SimpleMapPowertrain("Powertrain");
             m_powertrain = ptrain;
@@ -120,119 +115,16 @@ void Tract::Initialize() {
     m_powertrain->Initialize(GetChassisBody(), m_vehicle->GetDriveshaft());
 
     // Create the tires and set parameters depending on type.
-    switch (m_tireType) {
-        case TireModelType::RIGID:
-        case TireModelType::RIGID_MESH: {
-            bool use_mesh = (m_tireType == TireModelType::RIGID_MESH);
-            Tract_RigidTire* tire_FL = new Tract_RigidTire("FL", use_mesh);
-            Tract_RigidTire* tire_FR = new Tract_RigidTire("FR", use_mesh);
-            Tract_RigidTire* tire_RL = new Tract_RigidTire("RL", use_mesh);
-            Tract_RigidTire* tire_RR = new Tract_RigidTire("RR", use_mesh);
+    bool use_mesh = (m_tireType == TireModelType::RIGID_MESH);
+    Tract_RigidTire* tire_FL = new Tract_RigidTire("FL", 0.4, use_mesh);
+    Tract_RigidTire* tire_FR = new Tract_RigidTire("FR", 0.4, use_mesh);
+    Tract_RigidTire* tire_RL = new Tract_RigidTire("RL", 0.4, use_mesh);
+    Tract_RigidTire* tire_RR = new Tract_RigidTire("RR", 0.4, use_mesh);
 
-            m_tires[0] = tire_FL;
-            m_tires[1] = tire_FR;
-            m_tires[2] = tire_RL;
-            m_tires[3] = tire_RR;
-
-            break;
-        }
-        case TireModelType::LUGRE: {
-            Tract_LugreTire* tire_FL = new Tract_LugreTire("FL");
-            Tract_LugreTire* tire_FR = new Tract_LugreTire("FR");
-            Tract_LugreTire* tire_RL = new Tract_LugreTire("RL");
-            Tract_LugreTire* tire_RR = new Tract_LugreTire("RR");
-
-            m_tires[0] = tire_FL;
-            m_tires[1] = tire_FR;
-            m_tires[2] = tire_RL;
-            m_tires[3] = tire_RR;
-
-            break;
-        }
-        case TireModelType::FIALA: {
-            Tract_FialaTire* tire_FL = new Tract_FialaTire("FL");
-            Tract_FialaTire* tire_FR = new Tract_FialaTire("FR");
-            Tract_FialaTire* tire_RL = new Tract_FialaTire("RL");
-            Tract_FialaTire* tire_RR = new Tract_FialaTire("RR");
-
-            m_tires[0] = tire_FL;
-            m_tires[1] = tire_FR;
-            m_tires[2] = tire_RL;
-            m_tires[3] = tire_RR;
-
-            break;
-        }
-        case TireModelType::TMEASY: {
-            Tract_TMeasyTire* tire_FL = new Tract_TMeasyTire("FL");
-            Tract_TMeasyTire* tire_FR = new Tract_TMeasyTire("FR");
-            Tract_TMeasyTire* tire_RL = new Tract_TMeasyTire("RL");
-            Tract_TMeasyTire* tire_RR = new Tract_TMeasyTire("RR");
-
-            m_tires[0] = tire_FL;
-            m_tires[1] = tire_FR;
-            m_tires[2] = tire_RL;
-            m_tires[3] = tire_RR;
-
-            break;
-        }
-        case TireModelType::PAC89: {
-            Tract_Pac89Tire* tire_FL = new Tract_Pac89Tire("FL");
-            Tract_Pac89Tire* tire_FR = new Tract_Pac89Tire("FR");
-            Tract_Pac89Tire* tire_RL = new Tract_Pac89Tire("RL");
-            Tract_Pac89Tire* tire_RR = new Tract_Pac89Tire("RR");
-
-            m_tires[0] = tire_FL;
-            m_tires[1] = tire_FR;
-            m_tires[2] = tire_RL;
-            m_tires[3] = tire_RR;
-
-            break;
-        }
-        case TireModelType::PACEJKA: {
-            ChPacejkaTire* tire_FL = new Tract_Pac02Tire("FL");
-            ChPacejkaTire* tire_FR = new Tract_Pac02Tire("FR");
-            ChPacejkaTire* tire_RL = new Tract_Pac02Tire("RL");
-            ChPacejkaTire* tire_RR = new Tract_Pac02Tire("RR");
-
-            tire_FL->SetDrivenWheel(false);
-            tire_FR->SetDrivenWheel(false);
-            tire_RL->SetDrivenWheel(true);
-            tire_RR->SetDrivenWheel(true);
-
-            m_tires[0] = tire_FL;
-            m_tires[1] = tire_FR;
-            m_tires[2] = tire_RL;
-            m_tires[3] = tire_RR;
-
-            break;
-        }
-        case TireModelType::ANCF: {
-            Tract_ANCFTire* tire_FL = new Tract_ANCFTire("FL");
-            Tract_ANCFTire* tire_FR = new Tract_ANCFTire("FR");
-            Tract_ANCFTire* tire_RL = new Tract_ANCFTire("RL");
-            Tract_ANCFTire* tire_RR = new Tract_ANCFTire("RR");
-
-            m_tires[0] = tire_FL;
-            m_tires[1] = tire_FR;
-            m_tires[2] = tire_RL;
-            m_tires[3] = tire_RR;
-            break;
-        }
-        case TireModelType::REISSNER: {
-            Tract_ReissnerTire* tire_FL = new Tract_ReissnerTire("FL");
-            Tract_ReissnerTire* tire_FR = new Tract_ReissnerTire("FR");
-            Tract_ReissnerTire* tire_RL = new Tract_ReissnerTire("RL");
-            Tract_ReissnerTire* tire_RR = new Tract_ReissnerTire("RR");
-
-            m_tires[0] = tire_FL;
-            m_tires[1] = tire_FR;
-            m_tires[2] = tire_RL;
-            m_tires[3] = tire_RR;
-            break;
-        }
-        default:
-            break;
-    }
+    m_tires[0] = tire_FL;
+    m_tires[1] = tire_FR;
+    m_tires[2] = tire_RL;
+    m_tires[3] = tire_RR;
 
     // Initialize the tires.
     m_tires[0]->Initialize(m_vehicle->GetWheelBody(FRONT_LEFT), LEFT);

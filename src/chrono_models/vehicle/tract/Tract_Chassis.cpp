@@ -21,24 +21,24 @@
 
 #include "chrono_vehicle/ChVehicleModelData.h"
 
-#include "chrono_models/vehicle/hmmwv/HMMWV_Chassis.h"
+#include "chrono_models/vehicle/tract/Tract_Chassis.h"
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 // -----------------------------------------------------------------------------
 // Static variables
 // -----------------------------------------------------------------------------
-const double HMMWV_Chassis::m_mass = 2086.52;
-const ChVector<> HMMWV_Chassis::m_inertiaXX(1078.52, 2955.66, 3570.20);
-const ChVector<> HMMWV_Chassis::m_inertiaXY(0, 0, 0);
-const ChVector<> HMMWV_Chassis::m_COM_loc(0.056, 0, 0.523);
-const ChCoordsys<> HMMWV_Chassis::m_driverCsys(ChVector<>(0.87, -0.27, 1.05), ChQuaternion<>(1, 0, 0, 0));
+const double Tract_Chassis::m_mass = 2086.52;
+const ChVector<> Tract_Chassis::m_inertiaXX(1078.52, 2955.66, 3570.20);
+const ChVector<> Tract_Chassis::m_inertiaXY(0, 0, 0);
+const ChVector<> Tract_Chassis::m_COM_loc(0.056, 0, 0.523);
+const ChCoordsys<> Tract_Chassis::m_driverCsys(ChVector<>(0.87, -0.27, 1.05), ChQuaternion<>(1, 0, 0, 0));
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-HMMWV_Chassis::HMMWV_Chassis(const std::string& name, bool fixed, ChassisCollisionType chassis_collision_type)
+Tract_Chassis::Tract_Chassis(const std::string& name, bool fixed, ChassisCollisionType chassis_collision_type)
     : ChRigidChassis(name, fixed) {
     m_inertia.SetElement(0, 0, m_inertiaXX.x());
     m_inertia.SetElement(1, 1, m_inertiaXX.y());
@@ -59,8 +59,8 @@ HMMWV_Chassis::HMMWV_Chassis(const std::string& name, bool fixed, ChassisCollisi
     m_vis_boxes.push_back(box1);
 
     m_has_mesh = true;
-    m_vis_mesh_name = "hmmwv_chassis_POV_geom";
-    m_vis_mesh_file = "hmmwv/hmmwv_chassis.obj";
+    m_vis_mesh_name = "tract_chassis_POV_geom";
+    m_vis_mesh_file = "tract/tract_chassis.obj";
 
     m_has_collision = (chassis_collision_type != ChassisCollisionType::NONE);
     switch (chassis_collision_type) {
@@ -68,7 +68,7 @@ HMMWV_Chassis::HMMWV_Chassis(const std::string& name, bool fixed, ChassisCollisi
             m_coll_boxes.push_back(box1);
             break;
         case ChassisCollisionType::MESH:
-            m_coll_mesh_names.push_back("hmmwv/hmmwv_chassis_simple.obj");
+            m_coll_mesh_names.push_back("tract/tract_chassis_simple.obj");
             break;
         default:
             break;

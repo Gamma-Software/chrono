@@ -16,8 +16,7 @@
 //
 // =============================================================================
 
-#ifndef HMMWV_RACKPINION_H
-#define HMMWV_RACKPINION_H
+#pragma once
 
 #include "chrono_vehicle/wheeled_vehicle/steering/ChRackPinion.h"
 
@@ -25,16 +24,16 @@
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// Rack-pinion steering subsystem for the HMMWV vehicle.
-class CH_MODELS_API HMMWV_RackPinion : public ChRackPinion {
+class CH_MODELS_API Tract_RackPinion : public ChRackPinion {
   public:
-    HMMWV_RackPinion(const std::string& name);
-    ~HMMWV_RackPinion() {}
+    Tract_RackPinion(const std::string& name);
+    ~Tract_RackPinion() {}
 
     virtual double GetSteeringLinkMass() const override { return m_steeringLinkMass; }
     virtual ChVector<> GetSteeringLinkInertia() const override { return m_steeringLinkInertia; }
@@ -63,5 +62,3 @@ class CH_MODELS_API HMMWV_RackPinion : public ChRackPinion {
 }  // end namespace hmmwv
 }  // end namespace vehicle
 }  // end namespace chrono
-
-#endif

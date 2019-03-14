@@ -20,53 +20,32 @@
 
 #include "chrono_vehicle/ChVehicleModelData.h"
 
-#include "chrono_models/vehicle/hmmwv/HMMWV_Wheel.h"
+#include "chrono_models/vehicle/tract/Tract_Wheel.h"
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 // -----------------------------------------------------------------------------
 // Static variables
 // -----------------------------------------------------------------------------
 
-const double HMMWV_Wheel::m_mass = 18.8;
-const ChVector<> HMMWV_Wheel::m_inertia(0.113, 0.113, 0.113);
+const double Tract_Wheel::m_mass = 18.8;
+const ChVector<> Tract_Wheel::m_inertia(0.113, 0.113, 0.113);
 
-const double HMMWV_Wheel::m_radius = 0.268;
-const double HMMWV_Wheel::m_width = 0.22;
-
-const std::string HMMWV_WheelLeft::m_meshName = "wheel_L_POV_geom";
-const std::string HMMWV_WheelLeft::m_meshFile = "hmmwv/wheel_L.obj";
-
-const std::string HMMWV_WheelRight::m_meshName = "wheel_R_POV_geom";
-const std::string HMMWV_WheelRight::m_meshFile = "hmmwv/wheel_R.obj";
+const double Tract_Wheel::m_width = 0.22;
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-HMMWV_Wheel::HMMWV_Wheel(const std::string& name) : ChWheel(name) {}
-
-HMMWV_WheelLeft::HMMWV_WheelLeft(const std::string& name) : HMMWV_Wheel(name) {}
-
-HMMWV_WheelRight::HMMWV_WheelRight(const std::string& name) : HMMWV_Wheel(name) {}
+Tract_Wheel::Tract_Wheel(const std::string& name, double radius) : ChWheel(name), m_radius(radius) {}
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-void HMMWV_Wheel::AddVisualizationAssets(VisualizationType vis) {
-    if (vis == VisualizationType::MESH) {
-        auto trimesh = std::make_shared<geometry::ChTriangleMeshConnected>();
-        trimesh->LoadWavefrontMesh(GetMeshFile(), false, false);
-        m_trimesh_shape = std::make_shared<ChTriangleMeshShape>();
-        m_trimesh_shape->SetMesh(trimesh);
-        m_trimesh_shape->SetName(GetMeshName());
-        m_trimesh_shape->SetStatic(true);
-        m_spindle->AddAsset(m_trimesh_shape);
-    } else {
-        ChWheel::AddVisualizationAssets(vis);
-    }
+void Tract_Wheel::AddVisualizationAssets(VisualizationType vis) {
+    ChWheel::AddVisualizationAssets(vis);
 }
 
-void HMMWV_Wheel::RemoveVisualizationAssets() {
+void Tract_Wheel::RemoveVisualizationAssets() {
     ChWheel::RemoveVisualizationAssets();
 
     // Make sure we only remove the assets added by HMMWV_Wheel::AddVisualizationAssets.

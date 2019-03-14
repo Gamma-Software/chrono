@@ -42,7 +42,7 @@ class CH_MODELS_API HMMWV_Vehicle : public ChWheeledVehicle {
 
     virtual int GetNumberAxles() const override { return 2; }
 
-    virtual double GetWheelbase() const override { return 3.378; }
+    virtual double GetWheelbase() const { return 3.378; }
     virtual double GetMinTurningRadius() const override { return 7.62; }
     virtual double GetMaxSteeringAngle() const override { return 30.23 * CH_C_DEG_TO_RAD; }
 

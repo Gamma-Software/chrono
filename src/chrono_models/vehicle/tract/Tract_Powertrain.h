@@ -16,8 +16,7 @@
 //
 // =============================================================================
 
-#ifndef HMMWV_POWERTRAIN_H
-#define HMMWV_POWERTRAIN_H
+#pragma once
 
 #include "chrono_vehicle/ChVehicle.h"
 #include "chrono_vehicle/powertrain/ChShaftsPowertrain.h"
@@ -26,17 +25,17 @@
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// Shafts-based powertrain model for the HMMWV vehicle.
-class CH_MODELS_API HMMWV_Powertrain : public ChShaftsPowertrain {
+class CH_MODELS_API Tract_Powertrain : public ChShaftsPowertrain {
   public:
-    HMMWV_Powertrain(const std::string& name);
+    Tract_Powertrain(const std::string& name);
 
-    ~HMMWV_Powertrain() {}
+    ~Tract_Powertrain() {}
 
     virtual void SetGearRatios(std::vector<double>& gear_ratios) override;
 
@@ -61,5 +60,3 @@ class CH_MODELS_API HMMWV_Powertrain : public ChShaftsPowertrain {
 }  // end namespace hmmwv
 }  // end namespace vehicle
 }  // end namespace chrono
-
-#endif

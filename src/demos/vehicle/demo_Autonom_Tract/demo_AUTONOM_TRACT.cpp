@@ -31,7 +31,7 @@
 
 #include "chrono_vehicle/wheeled_vehicle/utils/ChWheeledVehicleIrrApp.h"
 
-#include "chrono_models/vehicle/hmmwv/HMMWV.h"
+#include "chrono_models/vehicle/tract/Tract.h"
 
 
 #include "chrono/physics/ChBodyEasy.h"
@@ -43,7 +43,7 @@
 
 using namespace chrono;
 using namespace chrono::vehicle;
-using namespace chrono::vehicle::hmmwv;
+using namespace chrono::vehicle::tract;
 //using namespace chrono::cosimul;
 
 // =============================================================================
@@ -65,7 +65,7 @@ TireModelType tire_model = TireModelType::RIGID;
 // Rigid terrain dimensions
 double terrainHeight = 0;
 double terrainLength = 200.0;  // size in X direction
-double terrainWidth = 100.0;   // size in Y direction
+double terrainWidth = 200.0;   // size in Y direction
 
 // Point on chassis tracked by the camera
 ChVector<> trackPoint(0.0, 0.0, .75);
@@ -102,102 +102,29 @@ int main(int argc, char* argv[]) {
     // --------------
 
     // Create the HMMWV vehicle, set parameters, and initialize
-    HMMWV_Reduced my_hmmwv;
-    my_hmmwv.SetChassisFixed(false);
-    my_hmmwv.SetChassisCollisionType(ChassisCollisionType::NONE);
-    my_hmmwv.SetInitPosition(ChCoordsys<>(initLoc, initRot));
-    my_hmmwv.SetPowertrainType(powertrain_model);
-    my_hmmwv.SetDriveType(DrivelineType::RWD);
-    my_hmmwv.SetTireType(tire_model);
-    my_hmmwv.SetTireStepSize(tire_step_size);
-    my_hmmwv.SetVehicleStepSize(step_size);
-    my_hmmwv.Initialize();
+    TractModel tract;
+    tract.SetChassisFixed(false);
+    tract.SetChassisCollisionType(ChassisCollisionType::NONE);
+    tract.SetInitPosition(ChCoordsys<>(initLoc, initRot));
+    tract.SetPowertrainType(powertrain_model);
+    tract.SetDriveType(DrivelineType::RWD);
+    tract.SetTireType(tire_model);
+    tract.SetTireStepSize(tire_step_size);
+    tract.SetVehicleStepSize(step_size);
+    tract.Initialize();
 
-    my_hmmwv.SetChassisVisualizationType(VisualizationType::PRIMITIVES);
-    my_hmmwv.SetSuspensionVisualizationType(VisualizationType::PRIMITIVES);
-    my_hmmwv.SetSteeringVisualizationType(VisualizationType::PRIMITIVES);
-    my_hmmwv.SetWheelVisualizationType(VisualizationType::NONE);
-    my_hmmwv.SetTireVisualizationType(VisualizationType::PRIMITIVES);
+	GetLog() << tract.GetVehicle().GetWheelbase(0);
+    GetLog() << tract.GetVehicle().GetWheelbase(1);
 
-
-
-    /*HMMWV_Full trailor(my_hmmwv.GetSystem());
-    trailor.SetChassisFixed(false);
-    trailor.SetChassisCollisionType(ChassisCollisionType::PRIMITIVES);
-    trailor.SetInitPosition(ChCoordsys<>(my_hmmwv.GetChassisBody()->GetPos() - ChVector<>(5., 0., 0), initRot));
-    trailor.SetPowertrainType(powertrain_model);
-    trailor.SetDriveType(DrivelineType::RWD);
-    trailor.SetTireType(tire_model);
-    trailor.SetTireStepSize(tire_step_size);
-    trailor.SetVehicleStepSize(step_size);
-    trailor.Initialize();
-
-    trailor.SetChassisVisualizationType(VisualizationType::PRIMITIVES);
-    trailor.SetSuspensionVisualizationType(VisualizationType::NONE);
-    trailor.SetSteeringVisualizationType(VisualizationType::NONE);
-    trailor.SetWheelVisualizationType(VisualizationType::NONE);
-    trailor.SetTireVisualizationType(VisualizationType::PRIMITIVES);
-
-    auto lock_trailer_point = std::make_shared<ChLinkLockSpherical>();
-    lock_trailer_point->Initialize(my_hmmwv.GetChassisBody(), trailor.GetChassisBody(), ChCoordsys<>(my_hmmwv.GetChassisBody()->GetPos() - ChVector<>(2., 0., 0.), Q_from_AngZ(0.)));
-    my_hmmwv.GetSystem()->AddLink(lock_trailer_point);*/
-
-    /*// Create the point of the trailor
-    auto attach_point = std::make_shared<ChBodyEasySphere>(0.1, 1);
-    attach_point->SetPos(my_hmmwv.GetChassis()->GetPointLocation(my_hmmwv.GetChassis()->GetBody()->GetPos() + ChVector<>(-2., 0., -1.5)));
-    my_hmmwv.GetSystem()->Add(attach_point);
-
-    // Link it to the Chassis
-    auto attach_point_link = std::make_shared<ChLinkLockLock>();
-    attach_point_link->Initialize(my_hmmwv.GetChassisBody(), attach_point, ChCoordsys<>(attach_point->GetPos()));
-    my_hmmwv.GetSystem()->AddLink(attach_point_link);
-
-    // Create a rod connected to the trailor
-    auto rod = std::make_shared<ChBodyEasyBox>(0.5, 0.1, 0.1, 1);
-    rod->SetPos(attach_point->GetPos() - ChVector<>(0.1 + 0.25, 0., 0.));
-    rod->GetMaterialSurfaceNSC()->SetFriction(0.8f);
-    my_hmmwv.GetSystem()->Add(rod);
-
-    // Link it to the Attach point
-    auto rod_link = std::make_shared<ChLinkLockSpherical>();
-    rod_link->Initialize(attach_point, rod, ChCoordsys<>(attach_point->GetPos(), Q_from_AngZ(0.)));
-    my_hmmwv.GetSystem()->AddLink(rod_link);
-
-    // Create the Trailor
-    auto trailor = std::make_shared<ChBodyEasyBox>(1., 0.7, 0.1, 1, true);
-    trailor->SetPos(rod->GetPos() - ChVector<>(0.5/2 + 1./2, 0., 0.));
-    my_hmmwv.GetSystem()->Add(trailor);
-
-    // Link it to the rod
-    auto trailor_link = std::make_shared<ChLinkLockLock>();
-    trailor_link->Initialize(rod, trailor, ChCoordsys<>(rod->GetPos()));
-    my_hmmwv.GetSystem()->AddLink(trailor_link);
-
-    auto left_trailor_wheel_body = std::make_shared<ChBodyEasyCylinder>(0.3, 0.1, 1, true);
-    left_trailor_wheel_body->SetPos(trailor->GetPos() - ChVector<>(0., 0.7 / 2 + 0.1 / 2, 0.));
-    left_trailor_wheel_body->GetMaterialSurfaceNSC()->SetRollingFriction(1.f); 
-    my_hmmwv.GetSystem()->Add(left_trailor_wheel_body);
-
-    // Link it to the Attach point
-    auto left_wheel_link = std::make_shared<ChLinkLockRevolute>();
-    left_wheel_link->Initialize(trailor, left_trailor_wheel_body, ChCoordsys<>(trailor->GetPos(), Q_from_AngY(0.)));
-    my_hmmwv.GetSystem()->AddLink(left_wheel_link);
-
-    
-    //auto right_trailor_wheel = std::make_shared<ChWheel>("right_trailor");
-    auto right_trailor_wheel_body = std::make_shared<ChBodyEasyCylinder>(0.3, 0.1, 1, true);
-    right_trailor_wheel_body->SetPos(trailor->GetPos() + ChVector<>(0., 0.7 / 2 + 0.1 / 2, 0.));
-    right_trailor_wheel_body->GetMaterialSurfaceNSC()->SetRollingFriction(1.f);
-    my_hmmwv.GetSystem()->Add(right_trailor_wheel_body);
-
-    // Link it to the Attach point
-    auto right_wheel_link = std::make_shared<ChLinkLockRevolute>();
-    right_wheel_link->Initialize(trailor, right_trailor_wheel_body, ChCoordsys<>(trailor->GetPos(), Q_from_AngX(0.)));
-    my_hmmwv.GetSystem()->AddLink(right_wheel_link);*/
+    tract.SetChassisVisualizationType(VisualizationType::PRIMITIVES);
+    tract.SetSuspensionVisualizationType(VisualizationType::PRIMITIVES);
+    tract.SetSteeringVisualizationType(VisualizationType::PRIMITIVES);
+    tract.SetWheelVisualizationType(VisualizationType::PRIMITIVES);
+    tract.SetTireVisualizationType(VisualizationType::PRIMITIVES);
 
 
     // Create the terrain
-    RigidTerrain terrain(my_hmmwv.GetSystem());
+    RigidTerrain terrain(tract.GetSystem());
     auto patch = terrain.AddPatch(ChCoordsys<>(ChVector<>(0, 0, terrainHeight - 5), QUNIT),
                                   ChVector<>(terrainLength, terrainWidth, 10));
     patch->SetContactFrictionCoefficient(0.9f);
@@ -208,7 +135,7 @@ int main(int argc, char* argv[]) {
     terrain.Initialize();
 
     // Create the vehicle Irrlicht interface
-    ChWheeledVehicleIrrApp app(&my_hmmwv.GetVehicle(), &my_hmmwv.GetPowertrain(), L"HMMWV-9 Demo",
+    ChWheeledVehicleIrrApp app(&tract.GetVehicle(), &tract.GetPowertrain(), L"Tract Demo",
                                irr::core::dimension2d<irr::u32>(1000, 800), irr::ELL_NONE);
     app.SetSkyBox();
     app.AddTypicalLights(irr::core::vector3df(30.f, -30.f, 100.f), irr::core::vector3df(30.f, 50.f, 100.f), 250, 130);
@@ -246,13 +173,13 @@ int main(int argc, char* argv[]) {
     }
 
     // Set up vehicle output
-    my_hmmwv.GetVehicle().SetChassisOutput(true);
-    my_hmmwv.GetVehicle().SetSuspensionOutput(0, true);
-    my_hmmwv.GetVehicle().SetSteeringOutput(0, true);
-    my_hmmwv.GetVehicle().SetOutput(ChVehicleOutput::ASCII, out_dir, "output", 0.1);
+    tract.GetVehicle().SetChassisOutput(true);
+    tract.GetVehicle().SetSuspensionOutput(0, true);
+    tract.GetVehicle().SetSteeringOutput(0, true);
+    tract.GetVehicle().SetOutput(ChVehicleOutput::ASCII, out_dir, "output", 0.1);
 
     // Generate JSON information with available output channels
-    my_hmmwv.GetVehicle().ExportComponentList(out_dir + "/component_list.json");
+    tract.GetVehicle().ExportComponentList(out_dir + "/component_list.json");
 
     // ---------------
     // Simulation loop
@@ -268,10 +195,10 @@ int main(int argc, char* argv[]) {
     double time = 0;
 
     // Driver location in vehicle local frame
-    ChVector<> driver_pos = my_hmmwv.GetChassis()->GetLocalDriverCoordsys().pos;
+    ChVector<> driver_pos = tract.GetChassis()->GetLocalDriverCoordsys().pos;
 
     while (app.GetDevice()->run()) {
-        time = my_hmmwv.GetSystem()->GetChTime();
+        time = tract.GetSystem()->GetChTime();
         app.BeginScene(true, true, irr::video::SColor(255, 140, 161, 192));
         app.DrawAll();
 
@@ -279,7 +206,7 @@ int main(int argc, char* argv[]) {
         if (povray_output && step_number % render_steps == 0) {
             char filename[100];
             sprintf(filename, "%s/data_%03d.dat", pov_dir.c_str(), render_frame + 1);
-            utils::WriteShapesPovray(my_hmmwv.GetSystem(), filename);
+            utils::WriteShapesPovray(tract.GetSystem(), filename);
             render_frame++;
         }
 
@@ -294,16 +221,14 @@ int main(int argc, char* argv[]) {
         // Update modules (process inputs from other modules)
         driver.Synchronize(time);
         terrain.Synchronize(time);
-        my_hmmwv.Synchronize(time, steering_input, braking_input, throttle_input, terrain);
-        //trailor.Synchronize(time, 0., 0., 0., terrain);
+        tract.Synchronize(time, steering_input, braking_input, throttle_input, terrain);
         app.Synchronize(driver.GetInputModeAsString(), steering_input, throttle_input, braking_input);
 
         // Advance simulation for one timestep for all modules
         double step = enforce_soft_real_time ? realtime_timer.SuggestSimulationStep(step_size) : step_size;
         driver.Advance(step);
         terrain.Advance(step);
-        my_hmmwv.Advance(step);
-        //trailor.Advance(step);
+        tract.Advance(step);
         app.Advance(step);
 
         // Increment frame number

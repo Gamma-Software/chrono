@@ -243,7 +243,7 @@ double ChWheeledVehicle::GetDriveshaftSpeed() const {
 // minimum turning radius, the wheelbase, and the track of the front suspension.
 // -----------------------------------------------------------------------------
 double ChWheeledVehicle::GetMaxSteeringAngle() const {
-    return std::asin(GetWheelbase() / (GetMinTurningRadius() - 0.5 * GetWheeltrack(0)));
+    return std::asin(GetWheelbase(0) / (GetMinTurningRadius() - 0.5 * GetWheeltrack(0)));
 }
 
 // -----------------------------------------------------------------------------

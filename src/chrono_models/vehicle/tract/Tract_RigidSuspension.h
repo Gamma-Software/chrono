@@ -9,15 +9,15 @@
 // http://projectchrono.org/license-chrono.txt.
 //
 // =============================================================================
-// Authors: Radu Serban, Justin Madsen
+// Authors: Radu Serban, Justin Madsen, Daniel Melanz
 // =============================================================================
 //
-// Front and Rear HMMWV suspension subsystems (reduced double A-arm)
+// Front and Rear HMMWV suspension subsystems (double A-arm)
 //
 // These concrete suspension subsystems are defined with respect to right-handed
 // frames with X pointing towards the front, Y to the left, and Z up (as imposed
-// by the base class ChDoubleWishboneReduced) and origins at the midpoint
-// between the lower control arms' connection points to the chassis.
+// by the base class ChDoubleWishbone) and origins at the midpoint between the
+// lower control arms' connection points to the chassis.
 //
 // All point locations are provided for the left half of the suspension.
 //
@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include "chrono_vehicle/wheeled_vehicle/suspension/ChDoubleWishboneReduced.h"
+#include "chrono_vehicle/wheeled_vehicle/suspension/ChRigidSuspension.h"
 
 #include "chrono_models/ChApiModels.h"
 
@@ -36,94 +36,64 @@ namespace tract {
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
-/// Reduced double wishbone front suspension for the HMMWV vehicle.
-/// The control arms are modeled using distance constraints.
-class CH_MODELS_API Tract_DoubleWishboneReducedFront : public ChDoubleWishboneReduced {
+/// Full double wishbone front suspension for the HMMWV vehicle.
+/// The control arms are modeled using rigid bodies.
+class CH_MODELS_API Tract_RigidSuspensionFront : public ChRigidSuspension {
   public:
-    Tract_DoubleWishboneReducedFront(const std::string& name);
-    ~Tract_DoubleWishboneReducedFront();
+    Tract_RigidSuspensionFront(const std::string& name);
+    ~Tract_RigidSuspensionFront();
 
     virtual double getSpindleMass() const override { return m_spindleMass; }
-    virtual double getUprightMass() const override { return m_uprightMass; }
 
     virtual double getSpindleRadius() const override { return m_spindleRadius; }
     virtual double getSpindleWidth() const override { return m_spindleWidth; }
-    virtual double getUprightRadius() const override { return m_uprightRadius; }
 
     virtual const ChVector<>& getSpindleInertia() const override { return m_spindleInertia; }
-    virtual const ChVector<>& getUprightInertia() const override { return m_uprightInertia; }
 
     virtual double getAxleInertia() const override { return m_axleInertia; }
-
-    virtual double getSpringRestLength() const override { return m_springRestLength; }
-    virtual ChLinkSpringCB::ForceFunctor* getShockForceFunctor() const override { return m_shockForceCB; }
 
   private:
     virtual const ChVector<> getLocation(PointId which) override;
 
-    ChLinkSpringCB::ForceFunctor* m_shockForceCB;
-
     static const double m_spindleMass;
-    static const double m_uprightMass;
 
     static const double m_spindleRadius;
     static const double m_spindleWidth;
-    static const double m_uprightRadius;
 
     static const ChVector<> m_spindleInertia;
-    static const ChVector<> m_uprightInertia;
 
     static const double m_axleInertia;
-
-    static const double m_springCoefficient;
-    static const double m_dampingCoefficient;
-    static const double m_springRestLength;
 };
 
 // -----------------------------------------------------------------------------
 
-/// Reduced double wishbone rear suspension for the HMMWV vehicle.
-/// The control arms are modeled using distance constraints.
-class CH_MODELS_API Tract_DoubleWishboneReducedRear : public ChDoubleWishboneReduced {
+/// Full double wishbone rear suspension for the HMMWV vehicle.
+/// The control arms are modeled using rigid bodies.
+class CH_MODELS_API Tract_RigidSuspensionRear : public ChRigidSuspension {
   public:
-    Tract_DoubleWishboneReducedRear(const std::string& name);
-    ~Tract_DoubleWishboneReducedRear();
+    Tract_RigidSuspensionRear(const std::string& name);
+    ~Tract_RigidSuspensionRear();
 
     virtual double getSpindleMass() const override { return m_spindleMass; }
-    virtual double getUprightMass() const override { return m_uprightMass; }
 
     virtual double getSpindleRadius() const override { return m_spindleRadius; }
     virtual double getSpindleWidth() const override { return m_spindleWidth; }
-    virtual double getUprightRadius() const override { return m_uprightRadius; }
 
     virtual const ChVector<>& getSpindleInertia() const override { return m_spindleInertia; }
-    virtual const ChVector<>& getUprightInertia() const override { return m_uprightInertia; }
 
     virtual double getAxleInertia() const override { return m_axleInertia; }
-
-    virtual double getSpringRestLength() const override { return m_springRestLength; }
-    virtual ChLinkSpringCB::ForceFunctor* getShockForceFunctor() const override { return m_shockForceCB; }
 
   private:
     virtual const ChVector<> getLocation(PointId which) override;
 
-    ChLinkSpringCB::ForceFunctor* m_shockForceCB;
-
     static const double m_spindleMass;
-    static const double m_uprightMass;
 
     static const double m_spindleRadius;
     static const double m_spindleWidth;
-    static const double m_uprightRadius;
 
     static const ChVector<> m_spindleInertia;
-    static const ChVector<> m_uprightInertia;
 
     static const double m_axleInertia;
-
-    static const double m_springCoefficient;
-    static const double m_dampingCoefficient;
-    static const double m_springRestLength;
 };
 
 /// @} vehicle_models_hmmwv

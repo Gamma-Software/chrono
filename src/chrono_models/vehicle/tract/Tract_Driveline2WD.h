@@ -16,8 +16,7 @@
 //
 // =============================================================================
 
-#ifndef HMMWV_DRIVELINE_2WD_H
-#define HMMWV_DRIVELINE_2WD_H
+#pragma once
 
 #include "chrono_vehicle/wheeled_vehicle/driveline/ChShaftsDriveline2WD.h"
 
@@ -25,17 +24,17 @@
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// Shafts-based 2-WD driveline for the HMMWV vehicle.
-class CH_MODELS_API HMMWV_Driveline2WD : public ChShaftsDriveline2WD {
+class CH_MODELS_API Tract_Driveline2WD : public ChShaftsDriveline2WD {
   public:
-    HMMWV_Driveline2WD(const std::string& name);
+    Tract_Driveline2WD(const std::string& name);
 
-    ~HMMWV_Driveline2WD() {}
+    ~Tract_Driveline2WD() {}
 
     virtual double GetDriveshaftInertia() const override { return m_driveshaft_inertia; }
     virtual double GetDifferentialBoxInertia() const override { return m_differentialbox_inertia; }
@@ -63,5 +62,3 @@ class CH_MODELS_API HMMWV_Driveline2WD : public ChShaftsDriveline2WD {
 }  // end namespace hmmwv
 }  // end namespace vehicle
 }  // end namespace chrono
-
-#endif

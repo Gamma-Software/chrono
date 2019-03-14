@@ -23,8 +23,7 @@
 //
 // =============================================================================
 
-#ifndef HMMWV_DOUBLEWISHBONE_H
-#define HMMWV_DOUBLEWISHBONE_H
+#pragma once
 
 #include "chrono_vehicle/wheeled_vehicle/suspension/ChDoubleWishbone.h"
 
@@ -32,17 +31,17 @@
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// Full double wishbone front suspension for the HMMWV vehicle.
 /// The control arms are modeled using rigid bodies.
-class CH_MODELS_API HMMWV_DoubleWishboneFront : public ChDoubleWishbone {
+class CH_MODELS_API Tract_DoubleWishboneFront : public ChDoubleWishbone {
   public:
-    HMMWV_DoubleWishboneFront(const std::string& name);
-    ~HMMWV_DoubleWishboneFront();
+    Tract_DoubleWishboneFront(const std::string& name);
+    ~Tract_DoubleWishboneFront();
 
     virtual double getSpindleMass() const override { return m_spindleMass; }
     virtual double getUCAMass() const override { return m_UCAMass; }
@@ -104,10 +103,10 @@ class CH_MODELS_API HMMWV_DoubleWishboneFront : public ChDoubleWishbone {
 
 /// Full double wishbone rear suspension for the HMMWV vehicle.
 /// The control arms are modeled using rigid bodies.
-class CH_MODELS_API HMMWV_DoubleWishboneRear : public ChDoubleWishbone {
+class CH_MODELS_API Tract_DoubleWishboneRear : public ChDoubleWishbone {
   public:
-    HMMWV_DoubleWishboneRear(const std::string& name);
-    ~HMMWV_DoubleWishboneRear();
+    Tract_DoubleWishboneRear(const std::string& name);
+    ~Tract_DoubleWishboneRear();
 
     virtual double getSpindleMass() const override { return m_spindleMass; }
     virtual double getUCAMass() const override { return m_UCAMass; }
@@ -170,5 +169,3 @@ class CH_MODELS_API HMMWV_DoubleWishboneRear : public ChDoubleWishbone {
 }  // end namespace hmmwv
 }  // end namespace vehicle
 }  // end namespace chrono
-
-#endif

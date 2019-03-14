@@ -43,7 +43,7 @@ class CH_VEHICLE_API WheeledVehicle : public ChWheeledVehicle {
 
     virtual int GetNumberAxles() const override { return m_num_axles; }
 
-    virtual double GetWheelbase() const override { return m_wheelbase; }
+    virtual double GetWheelbase() const { return m_wheelbase; }
     virtual double GetMinTurningRadius() const override { return m_turn_radius; }
     virtual double GetMaxSteeringAngle() const override { return m_steer_angle; }
 

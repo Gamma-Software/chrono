@@ -20,8 +20,7 @@
 //
 // =============================================================================
 
-#ifndef HMMWV_SIMPLEMAP_POWERTRAIN_H
-#define HMMWV_SIMPLEMAP_POWERTRAIN_H
+#pragma once
 
 #include "chrono_vehicle/powertrain/ChSimpleMapPowertrain.h"
 
@@ -29,15 +28,15 @@
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// Simple HMMWV powertrain subsystem (based on engine speed-torque maps).
-class CH_MODELS_API HMMWV_SimpleMapPowertrain : public ChSimpleMapPowertrain {
+class CH_MODELS_API Tract_SimpleMapPowertrain : public ChSimpleMapPowertrain {
   public:
-    HMMWV_SimpleMapPowertrain(const std::string& name);
+    Tract_SimpleMapPowertrain(const std::string& name);
 
     /// Specify maximum engine speed.
     virtual double GetMaxEngineSpeed() override;
@@ -69,5 +68,3 @@ class CH_MODELS_API HMMWV_SimpleMapPowertrain : public ChSimpleMapPowertrain {
 }  // end namespace hmmwv
 }  // end namespace vehicle
 }  // end namespace chrono
-
-#endif

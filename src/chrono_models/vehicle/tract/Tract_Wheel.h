@@ -16,8 +16,7 @@
 //
 // =============================================================================
 
-#ifndef HMMWV_WHEEL_H
-#define HMMWV_WHEEL_H
+#pragma once
 
 #include "chrono/assets/ChTriangleMeshShape.h"
 
@@ -29,16 +28,16 @@
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// HMMWV wheel base class.
-class CH_MODELS_API HMMWV_Wheel : public ChWheel {
+class CH_MODELS_API Tract_Wheel : public ChWheel {
   public:
-    HMMWV_Wheel(const std::string& name);
-    ~HMMWV_Wheel() {}
+    Tract_Wheel(const std::string& name, double wheel_radius);
+    ~Tract_Wheel() {}
 
     virtual double GetMass() const override { return m_mass; }
     virtual ChVector<> GetInertia() const override { return m_inertia; }
@@ -49,43 +48,12 @@ class CH_MODELS_API HMMWV_Wheel : public ChWheel {
     virtual void RemoveVisualizationAssets() override;
 
   protected:
-    virtual std::string GetMeshName() const = 0;
-    virtual std::string GetMeshFile() const = 0;
-
     std::shared_ptr<ChTriangleMeshShape> m_trimesh_shape;
 
-    static const double m_radius;
+    double m_radius;
     static const double m_width;
     static const double m_mass;
     static const ChVector<> m_inertia;
-};
-
-/// HMMWV left wheel (front or rear).
-class CH_MODELS_API HMMWV_WheelLeft : public HMMWV_Wheel {
-  public:
-    HMMWV_WheelLeft(const std::string& name);
-    ~HMMWV_WheelLeft() {}
-
-    virtual std::string GetMeshName() const override { return m_meshName; }
-    virtual std::string GetMeshFile() const override { return GetDataFile(m_meshFile); }
-
-  private:
-    static const std::string m_meshName;
-    static const std::string m_meshFile;
-};
-
-/// HMMWV right wheel (front or rear).
-class CH_MODELS_API HMMWV_WheelRight : public HMMWV_Wheel {
-  public:
-    HMMWV_WheelRight(const std::string& name);
-    ~HMMWV_WheelRight() {}
-
-    virtual std::string GetMeshName() const override { return m_meshName; }
-    virtual std::string GetMeshFile() const override { return GetDataFile(m_meshFile); }
-
-  private:
-    static const std::string m_meshName;
-    static const std::string m_meshFile;
 };
 
 /// @} vehicle_models_hmmwv
@@ -93,5 +61,3 @@ class CH_MODELS_API HMMWV_WheelRight : public HMMWV_Wheel {
 }  // end namespace hmmwv
 }  // end namespace vehicle
 }  // end namespace chrono
-
-#endif

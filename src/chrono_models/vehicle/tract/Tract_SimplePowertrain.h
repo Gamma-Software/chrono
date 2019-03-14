@@ -19,8 +19,7 @@
 //
 // =============================================================================
 
-#ifndef HMMWV_SIMPLEPOWERTRAIN_H
-#define HMMWV_SIMPLEPOWERTRAIN_H
+#pragma once
 
 #include "chrono_vehicle/ChVehicle.h"
 #include "chrono_vehicle/powertrain/ChSimplePowertrain.h"
@@ -29,17 +28,17 @@
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// Simple HMMWV powertrain subsystem (purely kinematic).
-class CH_MODELS_API HMMWV_SimplePowertrain : public ChSimplePowertrain {
+class CH_MODELS_API Tract_SimplePowertrain : public ChSimplePowertrain {
   public:
-    HMMWV_SimplePowertrain(const std::string& name);
+    Tract_SimplePowertrain(const std::string& name);
 
-    ~HMMWV_SimplePowertrain() {}
+    ~Tract_SimplePowertrain() {}
 
     virtual double GetForwardGearRatio() const override { return m_fwd_gear_ratio; }
     virtual double GetReverseGearRatio() const override { return m_rev_gear_ratio; }
@@ -58,5 +57,3 @@ class CH_MODELS_API HMMWV_SimplePowertrain : public ChSimplePowertrain {
 }  // end namespace hmmwv
 }  // end namespace vehicle
 }  // end namespace chrono
-
-#endif

@@ -16,8 +16,7 @@
 //
 // =============================================================================
 
-#ifndef HMMWV_SIMPLEDRIVELINE_H
-#define HMMWV_SIMPLEDRIVELINE_H
+#pragma once
 
 #include "chrono_vehicle/wheeled_vehicle/driveline/ChSimpleDriveline.h"
 
@@ -25,17 +24,17 @@
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// Simple HMMWV driveline subsystem (purely kinematic).
-class CH_MODELS_API HMMWV_SimpleDriveline : public ChSimpleDriveline {
+class CH_MODELS_API Tract_SimpleDriveline : public ChSimpleDriveline {
   public:
-    HMMWV_SimpleDriveline(const std::string& name);
+    Tract_SimpleDriveline(const std::string& name);
 
-    ~HMMWV_SimpleDriveline() {}
+    ~Tract_SimpleDriveline() {}
 
     virtual double GetFrontTorqueFraction() const override { return m_front_torque_frac; }
     virtual double GetFrontDifferentialMaxBias() const override { return m_front_diff_bias; }
@@ -52,5 +51,3 @@ class CH_MODELS_API HMMWV_SimpleDriveline : public ChSimpleDriveline {
 }  // end namespace hmmwv
 }  // end namespace vehicle
 }  // end namespace chrono
-
-#endif

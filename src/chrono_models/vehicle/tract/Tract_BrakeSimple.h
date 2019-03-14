@@ -16,8 +16,7 @@
 //
 // =============================================================================
 
-#ifndef HMMWV_BRAKESIMPLE_H
-#define HMMWV_BRAKESIMPLE_H
+#pragma once
 
 #include "chrono_vehicle/wheeled_vehicle/brake/ChBrakeSimple.h"
 
@@ -25,16 +24,16 @@
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// Simple HMMWV brake subsystem (torque applied directly to the spindle joint).
-class CH_MODELS_API HMMWV_BrakeSimple : public ChBrakeSimple {
+class CH_MODELS_API Tract_BrakeSimple : public ChBrakeSimple {
   public:
-    HMMWV_BrakeSimple(const std::string& name);
-    virtual ~HMMWV_BrakeSimple() {}
+    Tract_BrakeSimple(const std::string& name);
+    virtual ~Tract_BrakeSimple() {}
 
     virtual double GetMaxBrakingTorque() override { return m_maxtorque; }
 
@@ -47,5 +46,3 @@ class CH_MODELS_API HMMWV_BrakeSimple : public ChBrakeSimple {
 }  // end namespace hmmwv
 }  // end namespace vehicle
 }  // end namespace chrono
-
-#endif

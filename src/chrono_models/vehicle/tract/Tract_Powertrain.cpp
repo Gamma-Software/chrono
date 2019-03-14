@@ -16,30 +16,30 @@
 //
 // =============================================================================
 
-#include "chrono_models/vehicle/hmmwv/HMMWV_Powertrain.h"
+#include "chrono_models/vehicle/tract/Tract_Powertrain.h"
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 // -----------------------------------------------------------------------------
 // Static variables
 // -----------------------------------------------------------------------------
-const double HMMWV_Powertrain::m_motorblock_inertia = 10.5;
-const double HMMWV_Powertrain::m_crankshaft_inertia = 1.1;
-const double HMMWV_Powertrain::m_ingear_shaft_inertia = 0.3;
+const double Tract_Powertrain::m_motorblock_inertia = 10.5;
+const double Tract_Powertrain::m_crankshaft_inertia = 1.1;
+const double Tract_Powertrain::m_ingear_shaft_inertia = 0.3;
 
 // -----------------------------------------------------------------------------
 // Constructor of the HMMW_Powertrain.
 // the direction of the motor block is along the X axis, while the directions of
 // the axles is along the Y axis (relative to the chassis coordinate frame),
 // -----------------------------------------------------------------------------
-HMMWV_Powertrain::HMMWV_Powertrain(const std::string& name) : ChShaftsPowertrain(name, ChVector<>(1, 0, 0)) {}
+Tract_Powertrain::Tract_Powertrain(const std::string& name) : ChShaftsPowertrain(name, ChVector<>(1, 0, 0)) {}
 
 // -----------------------------------------------------------------------------
 // Initialize vector of gear ratios
 // -----------------------------------------------------------------------------
-void HMMWV_Powertrain::SetGearRatios(std::vector<double>& gear_ratios) {
+void Tract_Powertrain::SetGearRatios(std::vector<double>& gear_ratios) {
     gear_ratios.push_back(-0.1);  // 0: reverse gear;
     gear_ratios.push_back(0.2);   // 1: 1st gear;
     gear_ratios.push_back(0.4);   // 2: 2nd gear;
@@ -57,7 +57,7 @@ void HMMWV_Powertrain::SetGearRatios(std::vector<double>& gear_ratios) {
 // (3) TC torque ratio map
 //
 // -----------------------------------------------------------------------------
-void HMMWV_Powertrain::SetEngineTorqueMap(std::shared_ptr<ChFunction_Recorder>& map) {
+void Tract_Powertrain::SetEngineTorqueMap(std::shared_ptr<ChFunction_Recorder>& map) {
     double rpm_to_radsec = CH_C_2PI / 60.;
 
     map->AddPoint(-100 * rpm_to_radsec, 300);  // to start engine
@@ -82,7 +82,7 @@ void HMMWV_Powertrain::SetEngineTorqueMap(std::shared_ptr<ChFunction_Recorder>& 
     map->AddPoint(2700 * rpm_to_radsec, -400);  // fading out of engine torque
 }
 
-void HMMWV_Powertrain::SetEngineLossesMap(std::shared_ptr<ChFunction_Recorder>& map) {
+void Tract_Powertrain::SetEngineLossesMap(std::shared_ptr<ChFunction_Recorder>& map) {
     double rpm_to_radsec = CH_C_2PI / 60.;
 
     map->AddPoint(-50 * rpm_to_radsec, 30);  // it should never work in negative direction, anyway..
@@ -93,7 +93,7 @@ void HMMWV_Powertrain::SetEngineLossesMap(std::shared_ptr<ChFunction_Recorder>& 
     map->AddPoint(3000 * rpm_to_radsec, -90);
 }
 
-void HMMWV_Powertrain::SetTorqueConverterCapacityFactorMap(std::shared_ptr<ChFunction_Recorder>& map) {
+void Tract_Powertrain::SetTorqueConverterCapacityFactorMap(std::shared_ptr<ChFunction_Recorder>& map) {
     map->AddPoint(0.0, 15);
     map->AddPoint(0.25, 15);
     map->AddPoint(0.50, 15);
@@ -116,7 +116,7 @@ void HMMWV_Powertrain::SetTorqueConverterCapacityFactorMap(std::shared_ptr<ChFun
     */
 }
 
-void HMMWV_Powertrain::SetTorqeConverterTorqueRatioMap(std::shared_ptr<ChFunction_Recorder>& map) {
+void Tract_Powertrain::SetTorqeConverterTorqueRatioMap(std::shared_ptr<ChFunction_Recorder>& map) {
     map->AddPoint(0.0, 2.00);
     map->AddPoint(0.25, 1.80);
     map->AddPoint(0.50, 1.50);

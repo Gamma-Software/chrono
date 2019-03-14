@@ -25,18 +25,10 @@
 #include "chrono_vehicle/wheeled_vehicle/tire/ChPacejkaTire.h"
 
 #include "chrono_models/ChApiModels.h"
-#include "chrono_models/vehicle/tract/Tract_ANCFTire.h"
-#include "chrono_models/vehicle/tract/Tract_FialaTire.h"
-#include "chrono_models/vehicle/tract/Tract_LugreTire.h"
-#include "chrono_models/vehicle/tract/Tract_Pac02Tire.h"
-#include "chrono_models/vehicle/tract/Tract_Pac89Tire.h"
 #include "chrono_models/vehicle/tract/Tract_Powertrain.h"
-#include "chrono_models/vehicle/tract/Tract_ReissnerTire.h"
 #include "chrono_models/vehicle/tract/Tract_RigidTire.h"
 #include "chrono_models/vehicle/tract/Tract_SimpleMapPowertrain.h"
 #include "chrono_models/vehicle/tract/Tract_SimplePowertrain.h"
-#include "chrono_models/vehicle/tract/Tract_TMeasyTire.h"
-#include "chrono_models/vehicle/tract/Tract_VehicleFull.h"
 #include "chrono_models/vehicle/tract/Tract_VehicleReduced.h"
 
 namespace chrono {

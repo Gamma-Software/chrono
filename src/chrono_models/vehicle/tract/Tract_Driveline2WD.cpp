@@ -16,29 +16,29 @@
 //
 // =============================================================================
 
-#include "chrono_models/vehicle/hmmwv/HMMWV_Driveline2WD.h"
+#include "chrono_models/vehicle/tract/Tract_Driveline2WD.h"
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 // -----------------------------------------------------------------------------
 // Static variables
 // -----------------------------------------------------------------------------
-const double HMMWV_Driveline2WD::m_driveshaft_inertia = 0.5;
-const double HMMWV_Driveline2WD::m_differentialbox_inertia = 0.6;
+const double Tract_Driveline2WD::m_driveshaft_inertia = 0.5;
+const double Tract_Driveline2WD::m_differentialbox_inertia = 0.6;
 
-const double HMMWV_Driveline2WD::m_conicalgear_ratio = -0.2;
-const double HMMWV_Driveline2WD::m_differential_ratio = -1;
+const double Tract_Driveline2WD::m_conicalgear_ratio = -0.2;
+const double Tract_Driveline2WD::m_differential_ratio = -1;
 
-const double HMMWV_Driveline2WD::m_axle_differential_locking_limit = 100;
+const double Tract_Driveline2WD::m_axle_differential_locking_limit = 100;
 
 // -----------------------------------------------------------------------------
 // Constructor of the HMMWV_Driveline2WD.
 // the direction of the motor block is along the X axis, while the directions of
 // the axles is along the Y axis (relative to the chassis coordinate frame),
 // -----------------------------------------------------------------------------
-HMMWV_Driveline2WD::HMMWV_Driveline2WD(const std::string& name) : ChShaftsDriveline2WD(name) {
+Tract_Driveline2WD::Tract_Driveline2WD(const std::string& name) : ChShaftsDriveline2WD(name) {
     SetMotorBlockDirection(ChVector<>(1, 0, 0));
     SetAxleDirection(ChVector<>(0, 1, 0));
 }

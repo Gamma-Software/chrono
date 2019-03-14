@@ -16,44 +16,43 @@
 //
 // =============================================================================
 
-#ifndef HMMWV_VEHICLE_REDUCED_H
-#define HMMWV_VEHICLE_REDUCED_H
+#pragma once
 
 #include "chrono_models/ChApiModels.h"
 #include "chrono_models/vehicle/ChVehicleModelDefs.h"
 
-#include "chrono_models/vehicle/hmmwv/HMMWV_Vehicle.h"
-#include "chrono_models/vehicle/hmmwv/HMMWV_Chassis.h"
-#include "chrono_models/vehicle/hmmwv/HMMWV_BrakeSimple.h"
-#include "chrono_models/vehicle/hmmwv/HMMWV_DoubleWishboneReduced.h"
-#include "chrono_models/vehicle/hmmwv/HMMWV_Driveline2WD.h"
-#include "chrono_models/vehicle/hmmwv/HMMWV_Driveline4WD.h"
-#include "chrono_models/vehicle/hmmwv/HMMWV_SimpleDriveline.h"
-#include "chrono_models/vehicle/hmmwv/HMMWV_RackPinion.h"
-#include "chrono_models/vehicle/hmmwv/HMMWV_Wheel.h"
+#include "chrono_models/vehicle/tract/Tract_Vehicle.h"
+#include "chrono_models/vehicle/tract/Tract_Chassis.h"
+#include "chrono_models/vehicle/tract/Tract_BrakeSimple.h"
+#include "chrono_models/vehicle/tract/Tract_DoubleWishboneReduced.h"
+#include "chrono_models/vehicle/tract/Tract_RigidSuspension.h"
+#include "chrono_models/vehicle/tract/Tract_Driveline2WD.h"
+#include "chrono_models/vehicle/tract/Tract_SimpleDriveline.h"
+#include "chrono_models/vehicle/tract/Tract_RackPinion.h"
+#include "chrono_models/vehicle/tract/Tract_Wheel.h"
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// HMMWV vehicle system using reduced double wishbone suspension (control arms modeled using distance constraints)
 /// and rack-pinion steering mechanism.
-class CH_MODELS_API HMMWV_VehicleReduced : public HMMWV_Vehicle {
+class CH_MODELS_API Tract_VehicleReduced : public Tract_Vehicle {
   public:
-    HMMWV_VehicleReduced(const bool fixed,
+    Tract_VehicleReduced(const bool fixed,
                          DrivelineType drive_type,
                          ChMaterialSurface::ContactMethod contact_method,
                          ChassisCollisionType chassis_collision_type);
 
-    HMMWV_VehicleReduced(ChSystem* system,
+    Tract_VehicleReduced(ChSystem* system,
                          const bool fixed,
                          DrivelineType drive_type,
                          ChassisCollisionType chassis_collision_type);
 
-    ~HMMWV_VehicleReduced();
+    ~Tract_VehicleReduced();
 
     virtual void Initialize(const ChCoordsys<>& chassisPos, double chassisFwdVel = 0) override;
 
@@ -66,5 +65,3 @@ class CH_MODELS_API HMMWV_VehicleReduced : public HMMWV_Vehicle {
 }  // end namespace hmmwv
 }  // end namespace vehicle
 }  // end namespace chrono
-
-#endif

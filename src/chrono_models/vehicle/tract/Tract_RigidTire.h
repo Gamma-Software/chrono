@@ -16,8 +16,7 @@
 //
 // =============================================================================
 
-#ifndef HMMWV_RIGID_TIRE_H
-#define HMMWV_RIGID_TIRE_H
+#pragma once
 
 #include "chrono/assets/ChTriangleMeshShape.h"
 
@@ -27,16 +26,16 @@
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// Rigid tire model for the HMMWV vehicle.
-class CH_MODELS_API HMMWV_RigidTire : public ChRigidTire {
+class CH_MODELS_API Tract_RigidTire : public ChRigidTire {
   public:
-    HMMWV_RigidTire(const std::string& name, bool use_mesh = false);
-    ~HMMWV_RigidTire() {}
+    Tract_RigidTire(const std::string& name, double radius, bool use_mesh = false);
+    ~Tract_RigidTire() {}
 
     virtual double GetRadius() const override { return m_radius; }
     virtual double GetWidth() const override { return m_width; }
@@ -47,7 +46,7 @@ class CH_MODELS_API HMMWV_RigidTire : public ChRigidTire {
     virtual void RemoveVisualizationAssets() override final;
 
   private:
-    static const double m_radius;
+    double m_radius;
     static const double m_width;
     static const double m_mass;
     static const ChVector<> m_inertia;
@@ -62,5 +61,3 @@ class CH_MODELS_API HMMWV_RigidTire : public ChRigidTire {
 }  // end namespace hmmwv
 }  // end namespace vehicle
 }  // end namespace chrono
-
-#endif

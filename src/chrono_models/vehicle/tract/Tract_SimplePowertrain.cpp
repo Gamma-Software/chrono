@@ -19,23 +19,23 @@
 //
 // =============================================================================
 
-#include "chrono_models/vehicle/hmmwv/HMMWV_SimplePowertrain.h"
+#include "chrono_models/vehicle/tract/Tract_SimplePowertrain.h"
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 // -----------------------------------------------------------------------------
 // Static variables
 // -----------------------------------------------------------------------------
-const double HMMWV_SimplePowertrain::m_max_torque = 2400 / 8.851;
-const double HMMWV_SimplePowertrain::m_max_speed = 2000;
-const double HMMWV_SimplePowertrain::m_fwd_gear_ratio = 0.3;
-const double HMMWV_SimplePowertrain::m_rev_gear_ratio = -0.3;
+const double Tract_SimplePowertrain::m_max_torque = 2400 / 8.851;
+const double Tract_SimplePowertrain::m_max_speed = 2000;
+const double Tract_SimplePowertrain::m_fwd_gear_ratio = 0.3;
+const double Tract_SimplePowertrain::m_rev_gear_ratio = -0.3;
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-HMMWV_SimplePowertrain::HMMWV_SimplePowertrain(const std::string& name) : ChSimplePowertrain(name) {}
+Tract_SimplePowertrain::Tract_SimplePowertrain(const std::string& name) : ChSimplePowertrain(name) {}
 
 }  // end namespace hmmwv
 }  // end namespace vehicle

@@ -20,21 +20,21 @@
 //
 // =============================================================================
 
-#include "chrono_models/vehicle/hmmwv/HMMWV_SimpleMapPowertrain.h"
+#include "chrono_models/vehicle/tract/Tract_SimpleMapPowertrain.h"
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 const double rpm2rads = CH_C_PI / 30;
 
-HMMWV_SimpleMapPowertrain::HMMWV_SimpleMapPowertrain(const std::string& name) : ChSimpleMapPowertrain(name) {}
+Tract_SimpleMapPowertrain::Tract_SimpleMapPowertrain(const std::string& name) : ChSimpleMapPowertrain(name) {}
 
-double HMMWV_SimpleMapPowertrain::GetMaxEngineSpeed() {
+double Tract_SimpleMapPowertrain::GetMaxEngineSpeed() {
     return 2700 * rpm2rads;
 }
 
-void HMMWV_SimpleMapPowertrain::SetEngineTorqueMaps(ChFunction_Recorder& map0, ChFunction_Recorder& mapF) {
+void Tract_SimpleMapPowertrain::SetEngineTorqueMaps(ChFunction_Recorder& map0, ChFunction_Recorder& mapF) {
     map0.AddPoint(-10.472, 0.000);
     map0.AddPoint(83.776, -20.0);
     map0.AddPoint(104.720, -20.0);
@@ -60,7 +60,7 @@ void HMMWV_SimpleMapPowertrain::SetEngineTorqueMaps(ChFunction_Recorder& map0, C
     mapF.AddPoint(282.743, -800.0);
 }
 
-void HMMWV_SimpleMapPowertrain::SetGearRatios(std::vector<double>& fwd_gear_ratios, double& reverse_gear_ratio) {
+void Tract_SimpleMapPowertrain::SetGearRatios(std::vector<double>& fwd_gear_ratios, double& reverse_gear_ratio) {
     reverse_gear_ratio = -0.2;
 
     fwd_gear_ratios.push_back(0.1708);
@@ -71,7 +71,7 @@ void HMMWV_SimpleMapPowertrain::SetGearRatios(std::vector<double>& fwd_gear_rati
     fwd_gear_ratios.push_back(1.5361);
 }
 
-void HMMWV_SimpleMapPowertrain::SetShiftPoints(std::vector<std::pair<double, double>>& shift_bands) {
+void Tract_SimpleMapPowertrain::SetShiftPoints(std::vector<std::pair<double, double>>& shift_bands) {
     shift_bands.push_back(std::pair<double, double>(1000 * rpm2rads, 2226 * rpm2rads));
     shift_bands.push_back(std::pair<double, double>(1000 * rpm2rads, 2225 * rpm2rads));
     shift_bands.push_back(std::pair<double, double>(1000 * rpm2rads, 2210 * rpm2rads));

@@ -16,8 +16,7 @@
 //
 // =============================================================================
 
-#ifndef HMMWV_VEHICLE_H
-#define HMMWV_VEHICLE_H
+#pragma once
 
 #include <vector>
 #include "chrono/core/ChCoordsys.h"
@@ -42,9 +41,8 @@ class CH_MODELS_API Tract_Vehicle : public ChWheeledVehicle {
 
     virtual int GetNumberAxles() const override { return 2; }
 
-    virtual double GetWheelbase() const override { return 3.378; }
-    virtual double GetMinTurningRadius() const override { return 7.62; }
-    virtual double GetMaxSteeringAngle() const override { return 30.23 * CH_C_DEG_TO_RAD; }
+    virtual double GetMinTurningRadius() const override { return GetWheelbase(0)/std::tan(GetMaxSteeringAngle()); }
+    virtual double GetMaxSteeringAngle() const override { return 26.9 * CH_C_DEG_TO_RAD; }
 
     void SetInitWheelAngVel(const std::vector<double>& omega) {
         assert(omega.size() == 4);
@@ -67,5 +65,3 @@ class CH_MODELS_API Tract_Vehicle : public ChWheeledVehicle {
 }  // end namespace hmmwv
 }  // end namespace vehicle
 }  // end namespace chrono
-
-#endif

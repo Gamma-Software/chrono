@@ -16,9 +16,7 @@
 //
 // =============================================================================
 
-#ifndef HMMWV_CHASSIS_H
-#define HMMWV_CHASSIS_H
-
+#pragma once
 #include <string>
 
 #include "chrono_vehicle/chassis/ChRigidChassis.h"
@@ -28,18 +26,18 @@
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// HMMWV chassis subsystem.
-class CH_MODELS_API HMMWV_Chassis : public ChRigidChassis {
+class CH_MODELS_API Tract_Chassis : public ChRigidChassis {
   public:
-    HMMWV_Chassis(const std::string& name,
+    Tract_Chassis(const std::string& name,
                   bool fixed = false,
                   ChassisCollisionType chassis_collision_type = ChassisCollisionType::NONE);
-    ~HMMWV_Chassis() {}
+    ~Tract_Chassis() {}
 
     /// Return the mass of the chassis body.
     virtual double GetMass() const override { return m_mass; }
@@ -69,5 +67,3 @@ class CH_MODELS_API HMMWV_Chassis : public ChRigidChassis {
 }  // end namespace hmmwv
 }  // end namespace vehicle
 }  // end namespace chrono
-
-#endif

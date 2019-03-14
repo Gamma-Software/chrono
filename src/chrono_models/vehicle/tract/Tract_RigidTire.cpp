@@ -19,41 +19,41 @@
 #include <algorithm>
 
 #include "chrono_vehicle/ChVehicleModelData.h"
-#include "chrono_models/vehicle/hmmwv/HMMWV_RigidTire.h"
+#include "chrono_models/vehicle/tract/Tract_RigidTire.h"
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 // -----------------------------------------------------------------------------
 // Static variables
 // -----------------------------------------------------------------------------
 
-const double HMMWV_RigidTire::m_radius = 0.4673;
-const double HMMWV_RigidTire::m_width = 0.254;
+const double Tract_RigidTire::m_width = 0.254;
 
-const double HMMWV_RigidTire::m_mass = 37.6;
-const ChVector<> HMMWV_RigidTire::m_inertia(3.84, 6.69, 3.84);
+const double Tract_RigidTire::m_mass = 37.6;
+const ChVector<> Tract_RigidTire::m_inertia(3.84, 6.69, 3.84);
 
-const std::string HMMWV_RigidTire::m_meshName = "hmmwv_tire_POV_geom";
-const std::string HMMWV_RigidTire::m_meshFile = "hmmwv/hmmwv_tire.obj";
+const std::string Tract_RigidTire::m_meshName = "tract_tire_POV_geom";
+const std::string Tract_RigidTire::m_meshFile = "tract/tract_tire.obj";
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-HMMWV_RigidTire::HMMWV_RigidTire(const std::string& name, bool use_mesh) : ChRigidTire(name) {
+Tract_RigidTire::Tract_RigidTire(const std::string& name, double radius, bool use_mesh)
+    : ChRigidTire(name), m_radius(radius) {
     SetContactFrictionCoefficient(0.9f);
     SetContactRestitutionCoefficient(0.1f);
     SetContactMaterialProperties(2e7f, 0.3f);
     SetContactMaterialCoefficients(2e5f, 40.0f, 2e5f, 20.0f);
 
     if (use_mesh) {
-        SetMeshFilename(GetDataFile("hmmwv/hmmwv_tire.obj"), 0.005);
+        SetMeshFilename(GetDataFile("tract/tract_tire.obj"), 0.005);
     }
 }
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-void HMMWV_RigidTire::AddVisualizationAssets(VisualizationType vis) {
+void Tract_RigidTire::AddVisualizationAssets(VisualizationType vis) {
     if (vis == VisualizationType::MESH) {
         auto trimesh = std::make_shared<geometry::ChTriangleMeshConnected>();
         trimesh->LoadWavefrontMesh(vehicle::GetDataFile(m_meshFile), false, false);
@@ -67,7 +67,7 @@ void HMMWV_RigidTire::AddVisualizationAssets(VisualizationType vis) {
     }
 }
 
-void HMMWV_RigidTire::RemoveVisualizationAssets() {
+void Tract_RigidTire::RemoveVisualizationAssets() {
     ChRigidTire::RemoveVisualizationAssets();
 
     // Make sure we only remove the assets added by HMMWV_RigidTire::AddVisualizationAssets.

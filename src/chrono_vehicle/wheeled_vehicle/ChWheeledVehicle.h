@@ -126,7 +126,9 @@ class CH_VEHICLE_API ChWheeledVehicle : public ChVehicle {
     WheelState GetWheelState(const WheelID& wheel_id) const;
 
     /// Return the vehicle wheelbase.
-    virtual double GetWheelbase() const  = 0;
+    virtual double GetWheelbase(const double axle) const {
+        return (GetWheelPos(WheelID(axle, VehicleSide::LEFT)) - GetWheelPos(WheelID(axle, VehicleSide::RIGHT))).Length();
+    };
 
     /// Return the vehicle wheel track of the specified suspension subsystem.
     double GetWheeltrack(int id) const { return m_suspensions[id]->GetTrack(); }

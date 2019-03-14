@@ -16,21 +16,21 @@
 //
 // =============================================================================
 
-#include "chrono_models/vehicle/hmmwv/HMMWV_BrakeSimple.h"
+#include "chrono_models/vehicle/tract/Tract_BrakeSimple.h"
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 // -----------------------------------------------------------------------------
 // Static variables
 // -----------------------------------------------------------------------------
 
-const double HMMWV_BrakeSimple::m_maxtorque = 4000;
+const double Tract_BrakeSimple::m_maxtorque = 4000;
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-HMMWV_BrakeSimple::HMMWV_BrakeSimple(const std::string& name) : ChBrakeSimple(name) {}
+Tract_BrakeSimple::Tract_BrakeSimple(const std::string& name) : ChBrakeSimple(name) {}
 
 }  // end namespace hmmwv
 }  // end namespace vehicle

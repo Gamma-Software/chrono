@@ -23,11 +23,11 @@
 //
 // =============================================================================
 
-#include "chrono_models/vehicle/hmmwv/HMMWV_DoubleWishboneReduced.h"
+#include "chrono_models/vehicle/tract/Tract_DoubleWishboneReduced.h"
 
 namespace chrono {
 namespace vehicle {
-namespace hmmwv {
+namespace tract {
 
 // -----------------------------------------------------------------------------
 // Static variables
@@ -40,49 +40,49 @@ static const double lbfpin2Npm = 175.12677;
 
 // entire wheel assembly = 195 lbs, includes upright, spindle and tire.
 // HMMWV tires run ~ 100 lbs, so the spindle and upright should be ~ 95 lbs combined
-const double HMMWV_DoubleWishboneReducedFront::m_uprightMass = lb2kg * 60.0;
-const double HMMWV_DoubleWishboneReducedFront::m_spindleMass = lb2kg * 35.0;
+const double Tract_DoubleWishboneReducedFront::m_uprightMass = lb2kg * 60.0;
+const double Tract_DoubleWishboneReducedFront::m_spindleMass = lb2kg * 35.0;
 
-const double HMMWV_DoubleWishboneReducedFront::m_spindleRadius = 0.15;
-const double HMMWV_DoubleWishboneReducedFront::m_spindleWidth = 0.06;
-const double HMMWV_DoubleWishboneReducedFront::m_uprightRadius = 0.02;
+const double Tract_DoubleWishboneReducedFront::m_spindleRadius = 0.15;
+const double Tract_DoubleWishboneReducedFront::m_spindleWidth = 0.06;
+const double Tract_DoubleWishboneReducedFront::m_uprightRadius = 0.02;
 
-const ChVector<> HMMWV_DoubleWishboneReducedFront::m_spindleInertia(1, 1, 1);
-const ChVector<> HMMWV_DoubleWishboneReducedFront::m_uprightInertia(5, 5, 5);
+const ChVector<> Tract_DoubleWishboneReducedFront::m_spindleInertia(1, 1, 1);
+const ChVector<> Tract_DoubleWishboneReducedFront::m_uprightInertia(5, 5, 5);
 
-const double HMMWV_DoubleWishboneReducedFront::m_axleInertia = 0.4;
+const double Tract_DoubleWishboneReducedFront::m_axleInertia = 0.4;
 
-const double HMMWV_DoubleWishboneReducedFront::m_springCoefficient = lbfpin2Npm * 954;
-const double HMMWV_DoubleWishboneReducedFront::m_dampingCoefficient = lbfpin2Npm * 128.25;
-const double HMMWV_DoubleWishboneReducedFront::m_springRestLength = in2m * 13.36;
+const double Tract_DoubleWishboneReducedFront::m_springCoefficient = lbfpin2Npm * 954;
+const double Tract_DoubleWishboneReducedFront::m_dampingCoefficient = lbfpin2Npm * 128.25;
+const double Tract_DoubleWishboneReducedFront::m_springRestLength = in2m * 13.36;
 
 // -----------------------------------------------------------------------------
 
-const double HMMWV_DoubleWishboneReducedRear::m_uprightMass = lb2kg * 60.0;
-const double HMMWV_DoubleWishboneReducedRear::m_spindleMass = lb2kg * 35.0;
+const double Tract_DoubleWishboneReducedRear::m_uprightMass = lb2kg * 60.0;
+const double Tract_DoubleWishboneReducedRear::m_spindleMass = lb2kg * 35.0;
 
-const double HMMWV_DoubleWishboneReducedRear::m_spindleRadius = 0.15;
-const double HMMWV_DoubleWishboneReducedRear::m_spindleWidth = 0.06;
-const double HMMWV_DoubleWishboneReducedRear::m_uprightRadius = 0.02;
+const double Tract_DoubleWishboneReducedRear::m_spindleRadius = 0.15;
+const double Tract_DoubleWishboneReducedRear::m_spindleWidth = 0.06;
+const double Tract_DoubleWishboneReducedRear::m_uprightRadius = 0.02;
 
-const ChVector<> HMMWV_DoubleWishboneReducedRear::m_spindleInertia(1, 1, 1);
-const ChVector<> HMMWV_DoubleWishboneReducedRear::m_uprightInertia(5, 5, 5);
+const ChVector<> Tract_DoubleWishboneReducedRear::m_spindleInertia(1, 1, 1);
+const ChVector<> Tract_DoubleWishboneReducedRear::m_uprightInertia(5, 5, 5);
 
-const double HMMWV_DoubleWishboneReducedRear::m_axleInertia = 0.4;
+const double Tract_DoubleWishboneReducedRear::m_axleInertia = 0.4;
 
-const double HMMWV_DoubleWishboneReducedRear::m_springCoefficient = lbfpin2Npm * 2108;
-const double HMMWV_DoubleWishboneReducedRear::m_dampingCoefficient = lbfpin2Npm * 200.00;
-const double HMMWV_DoubleWishboneReducedRear::m_springRestLength = in2m * 15.03;
+const double Tract_DoubleWishboneReducedRear::m_springCoefficient = lbfpin2Npm * 2108;
+const double Tract_DoubleWishboneReducedRear::m_dampingCoefficient = lbfpin2Npm * 200.00;
+const double Tract_DoubleWishboneReducedRear::m_springRestLength = in2m * 15.03;
 
 // -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
-HMMWV_DoubleWishboneReducedFront::HMMWV_DoubleWishboneReducedFront(const std::string& name)
+Tract_DoubleWishboneReducedFront::Tract_DoubleWishboneReducedFront(const std::string& name)
     : ChDoubleWishboneReduced(name) {
     m_shockForceCB = new LinearSpringDamperForce(m_springCoefficient, m_dampingCoefficient);
 }
 
-HMMWV_DoubleWishboneReducedRear::HMMWV_DoubleWishboneReducedRear(const std::string& name)
+Tract_DoubleWishboneReducedRear::Tract_DoubleWishboneReducedRear(const std::string& name)
     : ChDoubleWishboneReduced(name) {
     m_shockForceCB = new LinearSpringDamperForce(m_springCoefficient, m_dampingCoefficient);
 }
@@ -90,11 +90,11 @@ HMMWV_DoubleWishboneReducedRear::HMMWV_DoubleWishboneReducedRear(const std::stri
 // -----------------------------------------------------------------------------
 // Destructors
 // -----------------------------------------------------------------------------
-HMMWV_DoubleWishboneReducedFront::~HMMWV_DoubleWishboneReducedFront() {
+Tract_DoubleWishboneReducedFront::~Tract_DoubleWishboneReducedFront() {
     delete m_shockForceCB;
 }
 
-HMMWV_DoubleWishboneReducedRear::~HMMWV_DoubleWishboneReducedRear() {
+Tract_DoubleWishboneReducedRear::~Tract_DoubleWishboneReducedRear() {
     delete m_shockForceCB;
 }
 
@@ -102,7 +102,7 @@ HMMWV_DoubleWishboneReducedRear::~HMMWV_DoubleWishboneReducedRear() {
 // Implementations of the getLocation() virtual methods.
 // -----------------------------------------------------------------------------
 
-const ChVector<> HMMWV_DoubleWishboneReducedFront::getLocation(PointId which) {
+const ChVector<> Tract_DoubleWishboneReducedFront::getLocation(PointId which) {
     switch (which) {
         case SPINDLE:
             return in2m * ChVector<>(-1.59, 35.815, -1.0350);
@@ -133,7 +133,7 @@ const ChVector<> HMMWV_DoubleWishboneReducedFront::getLocation(PointId which) {
     }
 }
 
-const ChVector<> HMMWV_DoubleWishboneReducedRear::getLocation(PointId which) {
+const ChVector<> Tract_DoubleWishboneReducedRear::getLocation(PointId which) {
     switch (which) {
         case SPINDLE:
             return in2m * ChVector<>(1.40, 35.815, -1.035);
