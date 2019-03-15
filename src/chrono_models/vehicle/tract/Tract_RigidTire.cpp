@@ -29,18 +29,14 @@ namespace tract {
 // Static variables
 // -----------------------------------------------------------------------------
 
-const double Tract_RigidTire::m_width = 0.254;
-
-const double Tract_RigidTire::m_mass = 37.6;
-const ChVector<> Tract_RigidTire::m_inertia(3.84, 6.69, 3.84);
 
 const std::string Tract_RigidTire::m_meshName = "tract_tire_POV_geom";
 const std::string Tract_RigidTire::m_meshFile = "tract/tract_tire.obj";
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-Tract_RigidTire::Tract_RigidTire(const std::string& name, double radius, bool use_mesh)
-    : ChRigidTire(name), m_radius(radius) {
+Tract_RigidTire::Tract_RigidTire(const std::string& name, const TireData& data, bool use_mesh)
+    : ChRigidTire(name), m_data(data) {
     SetContactFrictionCoefficient(0.9f);
     SetContactRestitutionCoefficient(0.1f);
     SetContactMaterialProperties(2e7f, 0.3f);

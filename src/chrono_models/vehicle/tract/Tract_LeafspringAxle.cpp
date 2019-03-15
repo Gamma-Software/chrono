@@ -38,26 +38,6 @@ static const double lb2kg = 0.453592;
 static const double lbf2N = 4.44822162;
 static const double lbfpin2Npm = 175.12677;
 
-const double Tract_LeafspringAxle::m_axleTubeMass = 124.0;
-const double Tract_LeafspringAxle::m_spindleMass = 14.705;
-
-const double Tract_LeafspringAxle::m_axleTubeRadius = 0.0476;
-const double Tract_LeafspringAxle::m_spindleRadius = 0.10;
-const double Tract_LeafspringAxle::m_spindleWidth = 0.06;
-
-const ChVector<> Tract_LeafspringAxle::m_axleTubeInertia(22.21, 0.0775, 22.21);
-const ChVector<> Tract_LeafspringAxle::m_spindleInertia(0.04117, 0.07352, 0.04117);
-
-const double Tract_LeafspringAxle::m_springDesignLength = 0.2;
-const double Tract_LeafspringAxle::m_springCoefficient = 102643.885771329;
-const double Tract_LeafspringAxle::m_springRestLength  = m_springDesignLength + 0.0621225507207084;
-const double Tract_LeafspringAxle::m_springMinLength = m_springDesignLength - 0.08;
-const double Tract_LeafspringAxle::m_springMaxLength = m_springDesignLength + 0.08;
-const double Tract_LeafspringAxle::m_damperCoefficient = 16336.2817986669;
-const double Tract_LeafspringAxle::m_damperDegressivityCompression = 3.0;
-const double Tract_LeafspringAxle::m_damperDegressivityExpansion = 1.0;
-const double Tract_LeafspringAxle::m_axleShaftInertia = 0.4;
-
 
 // ---------------------------------------------------------------------------------------
 // Tract spring functor class - implements a linear spring + bump stop + rebound stop
@@ -174,7 +154,8 @@ double Tract_ShockForceRear::operator()(double time, double rest_length, double 
 }
 
 
-Tract_LeafspringAxle::Tract_LeafspringAxle(const std::string& name) : ChLeafspringAxle(name) {
+Tract_LeafspringAxle::Tract_LeafspringAxle(const std::string& name,
+    const SuspensionData& data) : ChLeafspringAxle(name), m_data(data) {
 /*
     m_springForceCB = new LinearSpringForce(m_springCoefficient  // coefficient for linear spring
                                             );
@@ -182,12 +163,14 @@ Tract_LeafspringAxle::Tract_LeafspringAxle(const std::string& name) : ChLeafspri
     m_shockForceCB = new LinearDamperForce(m_damperCoefficient  // coefficient for linear damper
                     );
 */
-    m_springForceCB = new Tract_SpringForceRear(m_springCoefficient,m_springMinLength,m_springMaxLength);
+    m_springForceCB = new Tract_SpringForceRear(m_data.springCoefficient,
+        m_data.springMinLength,
+        m_data.springMaxLength);
 
-    m_shockForceCB = new Tract_ShockForceRear(m_damperCoefficient,
-        m_damperDegressivityCompression,
-        m_damperCoefficient,
-        m_damperDegressivityExpansion);
+    m_shockForceCB = new Tract_ShockForceRear(m_data.damperCoefficient,
+        m_data.damperDegressivityCompression,
+        m_data.damperCoefficient,
+        m_data.damperDegressivityExpansion);
 }
 
 // -----------------------------------------------------------------------------
@@ -201,15 +184,15 @@ Tract_LeafspringAxle::~Tract_LeafspringAxle() {
 const ChVector<> Tract_LeafspringAxle::getLocation(PointId which) {
     switch (which) {
         case SPRING_A:
-            return ChVector<>(0.0, 0.5142, m_axleTubeRadius);
+            return ChVector<>(0.0, 0.5142, m_data.axleTubeRadius);
         case SPRING_C:
-            return ChVector<>(0.0, 0.5142, m_axleTubeRadius+m_springDesignLength);
+            return ChVector<>(0.0, 0.5142, m_data.axleTubeRadius+m_data.springDesignLength);
         case SHOCK_A:
             return ChVector<>(-0.125, 0.441, -0.0507);
         case SHOCK_C:
             return ChVector<>(-0.3648,  0.4193, 0.4298);
         case SPINDLE:
-            return ChVector<>(0.0, 0.7325, 0.0);
+            return ChVector<>(0.0, m_data.wheelTrack/2, 0.0);
         default:
             return ChVector<>(0, 0, 0);
     }

@@ -50,14 +50,14 @@ Tract_Chassis::Tract_Chassis(const std::string& name, const ChassisData& data, b
 
     //// TODO:
     //// A more appropriate contact shape from primitives
-    BoxShape box1(ChVector<>(0.0, 0.0, 0.1), ChQuaternion<>(1, 0, 0, 0), ChVector<>(2.0, 1.0, 0.2));
+    BoxShape box1(ChVector<>(0.0, 0.0, 0.), ChQuaternion<>(1, 0, 0, 0), ChVector<>(1.0, 0.8, 0.05));
 
     m_has_primitives = true;
     m_vis_boxes.push_back(box1);
 
     m_has_mesh = true;
     m_vis_mesh_name = "tract_chassis_POV_geom";
-    m_vis_mesh_file = "tract/tract_chassis.obj";
+    m_vis_mesh_file = "tract/chassis.obj";
 
     m_has_collision = (chassis_collision_type != ChassisCollisionType::NONE);
     switch (chassis_collision_type) {
@@ -65,7 +65,7 @@ Tract_Chassis::Tract_Chassis(const std::string& name, const ChassisData& data, b
             m_coll_boxes.push_back(box1);
             break;
         case ChassisCollisionType::MESH:
-            m_coll_mesh_names.push_back("tract/tract_chassis_simple.obj");
+            m_coll_mesh_names.push_back("tract/chassis.obj");
             break;
         default:
             break;

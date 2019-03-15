@@ -113,9 +113,6 @@ int main(int argc, char* argv[]) {
     tract.SetVehicleStepSize(step_size);
     tract.Initialize();
 
-	GetLog() << tract.GetVehicle().GetWheelbase(0);
-    GetLog() << tract.GetVehicle().GetWheelbase(1);
-
     tract.SetChassisVisualizationType(VisualizationType::PRIMITIVES);
     tract.SetSuspensionVisualizationType(VisualizationType::PRIMITIVES);
     tract.SetSteeringVisualizationType(VisualizationType::PRIMITIVES);

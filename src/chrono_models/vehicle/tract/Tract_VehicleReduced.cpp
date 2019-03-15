@@ -60,33 +60,40 @@ void Tract_VehicleReduced::Create(bool fixed, ChassisCollisionType chassis_colli
     // -------------------------------------------
     ChassisData chassis_data;
     chassis_data.mass = 4215.;
+    chassis_data.COM_loc.x() = -0.05;
+    chassis_data.COM_loc.z() = 0.;
     chassis_data.driverCsys = ChCoordsys<>(ChVector<>(0.8, 0., 0.805), ChQuaternion<>(1, 0, 0, 0));
-    m_chassis = std::make_shared<Tract_Chassis>("Chassis", ChassisData(), fixed, chassis_collision_type);
+    m_chassis = std::make_shared<Tract_Chassis>("Chassis", chassis_data, fixed, chassis_collision_type);
 
     // -------------------------------------------
     // Create the suspension subsystems
     // -------------------------------------------
     m_suspensions.resize(2);
+    /*SuspensionData suspension_data;
+    suspension_data.springCoefficient *= 10;*/
     m_suspensions[0] = std::make_shared<Tract_DoubleWishboneReducedFront>("FrontSusp");
+    //suspension_data.wheelTrack = 1.24; // The rear wheel track is different
     m_suspensions[1] = std::make_shared<Tract_DoubleWishboneReducedRear>("RearSusp");
 
     // -----------------------------
     // Create the steering subsystem
     // -----------------------------
     m_steerings.resize(1);
-    m_steerings[0] = std::make_shared<Tract_RackPinion>("Steering");
+    SteeringData steering_data;
+    steering_data.steeringLinkLength = 0.654;
+    m_steerings[0] = std::make_shared<Tract_RackPinion>("Steering", steering_data);
 
     // -----------------
     // Create the wheels
     // -----------------
     m_wheels.resize(4);
     WheelData wheel_data;
-    wheel_data.radius = 45.72/2;
-    wheel_data.width = 15.24;
+    wheel_data.radius = 0.4572/2;
+    wheel_data.width = 0.1524;
     m_wheels[0] = std::make_shared<Tract_Wheel>("Wheel_FL", wheel_data);
     m_wheels[1] = std::make_shared<Tract_Wheel>("Wheel_FR", wheel_data);
-    wheel_data.radius = 60.96 / 2;
-    wheel_data.width = 17.78;
+    wheel_data.radius = 0.6096 / 2;
+    wheel_data.width = 0.1778;
     m_wheels[2] = std::make_shared<Tract_Wheel>("Wheel_RL", wheel_data);
     m_wheels[3] = std::make_shared<Tract_Wheel>("Wheel_RR", wheel_data);
 
@@ -122,14 +129,15 @@ void Tract_VehicleReduced::Initialize(const ChCoordsys<>& chassisPos, double cha
 
     // Initialize the steering subsystem (specify the steering subsystem's frame
     // relative to the chassis reference frame).
-    ChVector<> offset = in2m * ChVector<>(56.735, 0, 3.174);
+    ChVector<> offset = ChVector<>(0.5305, 0, 0.);
     m_steerings[0]->Initialize(m_chassis->GetBody(), offset, ChQuaternion<>(1, 0, 0, 0));
 
     // Initialize the suspension subsystems (specify the suspension subsystems'
     // frames relative to the chassis reference frame).
-    m_suspensions[0]->Initialize(m_chassis->GetBody(), in2m * ChVector<>(66.59, 0, 1.039),
+    double wheelBase = 1.521;
+    m_suspensions[0]->Initialize(m_chassis->GetBody(), ChVector<>(wheelBase/2, 0, 0.0264),
                                  m_steerings[0]->GetSteeringLink(), 0, m_omega[0], m_omega[1]);
-    m_suspensions[1]->Initialize(m_chassis->GetBody(), in2m * ChVector<>(-66.4, 0, 1.039), m_chassis->GetBody(), -1,
+    m_suspensions[1]->Initialize(m_chassis->GetBody(), ChVector<>(-wheelBase/2, 0, 0.0264), m_chassis->GetBody(), -1,
                                  m_omega[2], m_omega[3]);
 
     // Initialize wheels
@@ -142,8 +150,9 @@ void Tract_VehicleReduced::Initialize(const ChCoordsys<>& chassisPos, double cha
     std::vector<int> driven_susp_indexes(m_driveline->GetNumDrivenAxles());
 
     switch (m_driveType) {
-        case DrivelineType::FWD:
-            driven_susp_indexes[0] = 0;
+        case DrivelineType::RWD:
+            driven_susp_indexes[0] = 1;
+            driven_susp_indexes[1] = 0;
             break;
         case DrivelineType::SIMPLE:
             driven_susp_indexes[0] = 0;

@@ -28,28 +28,38 @@ namespace chrono {
 namespace vehicle {
 namespace tract {
 
+
+struct TireData
+{
+    double width = 0.254;
+    double radius = 0.49;
+
+    double mass = 37.6;
+    ChVector<> inertia = ChVector<>(3.84, 6.69, 3.84);
+
+    std::string meshName = "tract_tire_POV_geom";
+    std::string meshFile = "tract/tract_tire.obj";
+};
+
 /// @addtogroup vehicle_models_hmmwv
 /// @{
 
 /// Rigid tire model for the HMMWV vehicle.
 class CH_MODELS_API Tract_RigidTire : public ChRigidTire {
   public:
-    Tract_RigidTire(const std::string& name, double radius, bool use_mesh = false);
+    Tract_RigidTire(const std::string& name, const TireData& data, bool use_mesh = false);
     ~Tract_RigidTire() {}
 
-    virtual double GetRadius() const override { return m_radius; }
-    virtual double GetWidth() const override { return m_width; }
-    virtual double GetMass() const override { return m_mass; }
-    virtual ChVector<> GetInertia() const override { return m_inertia; }
+    virtual double GetRadius() const override { return m_data.radius; }
+    virtual double GetWidth() const override { return m_data.width; }
+    virtual double GetMass() const override { return m_data.mass; }
+    virtual ChVector<> GetInertia() const override { return m_data.inertia; }
 
     virtual void AddVisualizationAssets(VisualizationType vis) override;
     virtual void RemoveVisualizationAssets() override final;
 
   private:
-    double m_radius;
-    static const double m_width;
-    static const double m_mass;
-    static const ChVector<> m_inertia;
+    TireData m_data;
 
     static const std::string m_meshName;
     static const std::string m_meshFile;

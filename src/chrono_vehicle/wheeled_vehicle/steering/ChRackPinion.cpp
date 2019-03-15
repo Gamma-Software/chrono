@@ -124,7 +124,7 @@ void ChRackPinion::AddVisualizationAssets(VisualizationType vis) {
     m_link->AddAsset(cyl);
 
     auto col = std::make_shared<ChColorAsset>();
-    col->SetColor(ChColor(0.8f, 0.8f, 0.2f));
+    col->SetColor(ChColor(0.8f, 0.0f, 0.0f));
     m_link->AddAsset(col);
 }
 

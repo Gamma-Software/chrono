@@ -52,7 +52,7 @@ Tract::Tract(ChSystem* system)
       m_powertrain(NULL),
       m_tires({{NULL, NULL, NULL, NULL}}),
       m_contactMethod(ChMaterialSurface::NSC),
-      m_chassisCollisionType(ChassisCollisionType::NONE),
+      m_chassisCollisionType(ChassisCollisionType::MESH),
       m_fixed(false),
       m_driveType(DrivelineType::RWD),
       m_powertrainType(PowertrainModelType::SIMPLE),
@@ -116,10 +116,15 @@ void Tract::Initialize() {
 
     // Create the tires and set parameters depending on type.
     bool use_mesh = (m_tireType == TireModelType::RIGID_MESH);
-    Tract_RigidTire* tire_FL = new Tract_RigidTire("FL", 0.4, use_mesh);
-    Tract_RigidTire* tire_FR = new Tract_RigidTire("FR", 0.4, use_mesh);
-    Tract_RigidTire* tire_RL = new Tract_RigidTire("RL", 0.4, use_mesh);
-    Tract_RigidTire* tire_RR = new Tract_RigidTire("RR", 0.4, use_mesh);
+    TireData tire_data;
+    tire_data.radius = 0.4572 / 2;
+    tire_data.width = 0.1524;
+    Tract_RigidTire* tire_FL = new Tract_RigidTire("FL", tire_data, use_mesh);
+    Tract_RigidTire* tire_FR = new Tract_RigidTire("FR", tire_data, use_mesh);
+    tire_data.radius = 0.6096 / 2;
+    tire_data.width = 0.1778;
+    Tract_RigidTire* tire_RL = new Tract_RigidTire("RL", tire_data, use_mesh);
+    Tract_RigidTire* tire_RR = new Tract_RigidTire("RR", tire_data, use_mesh);
 
     m_tires[0] = tire_FL;
     m_tires[1] = tire_FR;
