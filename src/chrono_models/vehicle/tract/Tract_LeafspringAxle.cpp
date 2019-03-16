@@ -192,7 +192,13 @@ const ChVector<> Tract_LeafspringAxle::getLocation(PointId which) {
         case SHOCK_C:
             return ChVector<>(-0.3648,  0.4193, 0.4298);
         case SPINDLE:
-            return ChVector<>(0.0, m_data.wheelTrack/2, 0.0);
+            return ChVector<>(0.0, m_data.wheelTrack / 2, 0.0);
+        case UPRIGHT:
+            return ChVector<>(0.0, 0.76 / 2, 0.0);
+        case TIEROD_U:
+            return ChVector<>(-0.23, 0.654 / 2, 0.0);
+        case TIEROD_C:
+            return ChVector<>(-0.23, 0.0, 0.0);
         default:
             return ChVector<>(0, 0, 0);
     }

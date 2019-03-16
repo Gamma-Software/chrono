@@ -135,7 +135,6 @@ void ChLeafspringAxle::InitializeSide(VehicleSide side,
     // Chassis orientation (expressed in absolute frame)
     // Recall that the suspension reference frame is aligned with the chassis.
     ChQuaternion<> chassisRot = chassis->GetFrame_REF_to_abs().GetRot();
-    GetLog() << chassisRot;
 
     // Create and initialize spindle body (same orientation as the chassis)
     m_spindle[side] = std::shared_ptr<ChBody>(chassis->GetSystem()->NewBody());
@@ -147,12 +146,27 @@ void ChLeafspringAxle::InitializeSide(VehicleSide side,
     m_spindle[side]->SetInertiaXX(getSpindleInertia());
     chassis->GetSystem()->AddBody(m_spindle[side]);
 
+    // Create and initialize upright body (same orientation as the chassis)
+    m_upright[side] = std::shared_ptr<ChBody>(chassis->GetSystem()->NewBody());
+    m_upright[side]->SetNameString(m_name + "_upright" + suffix);
+    m_upright[side]->SetPos(points[UPRIGHT]);
+    m_upright[side]->SetRot(chassisRot);
+    m_upright[side]->SetMass(getUprightMass());
+    m_upright[side]->SetInertiaXX(getUprightInertia());
+    chassis->GetSystem()->AddBody(m_upright[side]);
+
     // Create and initialize the revolute joint between axle tube and spindle.
     ChCoordsys<> rev_csys(points[SPINDLE], chassisRot * Q_from_AngAxis(CH_C_PI / 2.0, VECT_X));
     m_revolute[side] = std::make_shared<ChLinkLockRevolute>();
     m_revolute[side]->SetNameString(m_name + "_revolute" + suffix);
-    m_revolute[side]->Initialize(m_spindle[side], m_axleTube, rev_csys);
+    m_revolute[side]->Initialize(m_spindle[side], m_upright[side], rev_csys);
     chassis->GetSystem()->AddLink(m_revolute[side]);
+
+	// Create the link between the tierod and the 
+    m_distTierod[side] = std::make_shared<ChLinkDistance>();
+    m_distTierod[side]->SetNameString(m_name + "_distTierod" + suffix);
+    m_distTierod[side]->Initialize(tierod_body, m_upright[side], false, points[TIEROD_C], points[TIEROD_U]);
+    chassis->GetSystem()->AddLink(m_distTierod[side]);
 
     // Create and initialize the spring/damper
     m_shock[side] = std::make_shared<ChLinkSpringCB>();

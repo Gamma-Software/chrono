@@ -131,6 +131,9 @@ class CH_VEHICLE_API ChLeafspringAxle : public ChSuspension {
     /// Get the current deformation velocity of the shock (damper) element.
     double GetShockVelocity(VehicleSide side) const { return m_shock[side]->GetSpringVelocity(); }
 
+    double getUprightMass() const { return 2.; }
+    ChVector<> getUprightInertia() const { return ChVector<>(1., 1., 1.); }
+
     /// Log current constraint violations.
     virtual void LogConstraintViolations(VehicleSide side) override;
 
@@ -144,6 +147,9 @@ class CH_VEHICLE_API ChLeafspringAxle : public ChSuspension {
         SPRING_A,  ///< spring, axle
         SPRING_C,  ///< spring, chassis
         SPINDLE,   ///< spindle location
+        UPRIGHT,   ///< upright location
+        TIEROD_U,    ///< tierod upright location
+        TIEROD_C,    ///< tierod chassis location
         NUM_POINTS
     };
 
@@ -179,9 +185,11 @@ class CH_VEHICLE_API ChLeafspringAxle : public ChSuspension {
 
     std::shared_ptr<ChBody> m_axleTube;  ///< handles to the axle tube body
     std::shared_ptr<ChBody> m_tierod;    ///< handles to the tierod body
+    std::shared_ptr<ChBody> m_upright[2];///< handles to upright bodies
 
     std::shared_ptr<ChLinkLockRevolutePrismatic> m_axleTubeGuide;  ///< allows translation Z and rotation X
     std::shared_ptr<ChLinkLockSpherical> m_sphericalTierod;        ///< knuckle-tierod spherical joint (left)
+    std::shared_ptr<ChLinkDistance> m_distTierod[2];  ///< handles to tierod bodies
 
     std::shared_ptr<ChLinkSpringCB> m_shock[2];   ///< handles to the spring links (L/R)
     std::shared_ptr<ChLinkSpringCB> m_spring[2];  ///< handles to the shock links (L/R)

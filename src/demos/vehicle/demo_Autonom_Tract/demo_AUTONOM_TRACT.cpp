@@ -219,6 +219,9 @@ int main(int argc, char* argv[]) {
         driver.Synchronize(time);
         terrain.Synchronize(time);
         tract.Synchronize(time, steering_input, braking_input, throttle_input, terrain);
+
+        GetLog() << "FL " << tract.GetVehicle().GetSuspension(0)->GetSpindleRot(VehicleSide::LEFT);
+        GetLog() << "FR " << tract.GetVehicle().GetSuspension(0)->GetSpindleRot(VehicleSide::RIGHT).GetZaxis();
         app.Synchronize(driver.GetInputModeAsString(), steering_input, throttle_input, braking_input);
 
         // Advance simulation for one timestep for all modules

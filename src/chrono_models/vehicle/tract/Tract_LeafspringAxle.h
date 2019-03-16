@@ -85,7 +85,7 @@ class CH_MODELS_API Tract_LeafspringAxle : public ChLeafspringAxle {
     /// Return the functor object for shock force.
     virtual ChLinkSpringCB::ForceFunctor* getShockForceFunctor() const override { return m_shockForceCB; }
 
-  private:
+  protected:
     ChLinkSpringCB::ForceFunctor* m_springForceCB;
     ChLinkSpringCB::ForceFunctor* m_shockForceCB;
 
