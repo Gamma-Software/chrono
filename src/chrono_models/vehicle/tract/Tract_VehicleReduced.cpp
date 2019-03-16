@@ -68,11 +68,11 @@ void Tract_VehicleReduced::Create(bool fixed, ChassisCollisionType chassis_colli
     // Create the suspension subsystems
     // -------------------------------------------
     m_suspensions.resize(2);
-    SuspensionData suspension_data;
-    suspension_data.springCoefficient *= 10;
-    m_suspensions[0] = std::make_shared<Tract_LeafspringAxle>("FrontSusp", suspension_data);
-    suspension_data.wheelTrack = 1.24; // The rear wheel track is different
-    m_suspensions[1] = std::make_shared<Tract_LeafspringAxle>("RearSusp", suspension_data);
+    /*SuspensionData suspension_data;
+    suspension_data.springCoefficient *= 10;*/
+    m_suspensions[0] = std::make_shared<Tract_DoubleWishboneReducedFront>("FrontSusp");
+    //suspension_data.wheelTrack = 1.24; // The rear wheel track is different
+    m_suspensions[1] = std::make_shared<Tract_DoubleWishboneReducedRear>("RearSusp");
 
     // -----------------------------
     // Create the steering subsystem

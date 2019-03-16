@@ -85,7 +85,7 @@ const std::string out_dir = GetChronoOutputPath() + "HMMWV9";
 const std::string pov_dir = out_dir + "/POVRAY";
 
 // =============================================================================
-
+#include <time.h>
 int main(int argc, char* argv[]) {
     GetLog() << "Copyright (c) 2017 projectchrono.org\nChrono version: " << CHRONO_VERSION << "\n\n";
 
@@ -132,7 +132,7 @@ int main(int argc, char* argv[]) {
     terrain.Initialize();
 
     // Create the vehicle Irrlicht interface
-    ChWheeledVehicleIrrApp app(&tract.GetVehicle(), &tract.GetPowertrain(), L"Tract Demo",
+    /*ChWheeledVehicleIrrApp app(&tract.GetVehicle(), &tract.GetPowertrain(), L"Tract Demo",
                                irr::core::dimension2d<irr::u32>(1000, 800), irr::ELL_NONE);
     app.SetSkyBox();
     app.AddTypicalLights(irr::core::vector3df(30.f, -30.f, 100.f), irr::core::vector3df(30.f, 50.f, 100.f), 250, 130);
@@ -144,14 +144,14 @@ int main(int argc, char* argv[]) {
     // Create the interactive driver system
     ChIrrGuiDriver driver(app);
     driver.Initialize();
-
+	*/
     // Set the time response for steering and throttle keyboard inputs.
     double steering_time = 1.0;  // time to go from 0 to +1 (or from 0 to -1)
     double throttle_time = 1.0;  // time to go from 0 to +1
     double braking_time = 0.3;   // time to go from 0 to +1
-    driver.SetSteeringDelta(render_step_size / steering_time);
+    /*driver.SetSteeringDelta(render_step_size / steering_time);
     driver.SetThrottleDelta(render_step_size / throttle_time);
-    driver.SetBrakingDelta(render_step_size / braking_time);
+    driver.SetBrakingDelta(render_step_size / braking_time);*/
 
     // -----------------
     // Initialize output
@@ -191,13 +191,12 @@ int main(int argc, char* argv[]) {
     int render_frame = 0;
     double time = 0;
 
-    // Driver location in vehicle local frame
-    ChVector<> driver_pos = tract.GetChassis()->GetLocalDriverCoordsys().pos;
-
-    while (app.GetDevice()->run()) {
+    //while (app.GetDevice()->run()) {
+    clock_t tStart = clock();
+    while (time < 10.){
         time = tract.GetSystem()->GetChTime();
-        app.BeginScene(true, true, irr::video::SColor(255, 140, 161, 192));
-        app.DrawAll();
+        //app.BeginScene(true, true, irr::video::SColor(255, 140, 161, 192));
+        //app.DrawAll();
 
         // Output POV-Ray data
         if (povray_output && step_number % render_steps == 0) {
@@ -208,34 +207,43 @@ int main(int argc, char* argv[]) {
         }
 
         // Collect output data from modules (for inter-module communication)
-        double throttle_input = driver.GetThrottle();
-        double steering_input = driver.GetSteering();
-        double braking_input = driver.GetBraking();
-
-        /*data_out(0) = throttle_input;
+        //double throttle_input = driver.GetThrottle();
+        double throttle_input = time/10;
+        GetLog() << "speed " << tract.GetVehicle().GetWheelState(0).ang_vel.x() << "\n";
+        //double steering_input = driver.GetSteering();
+        double steering_input = 0.;
+        //double braking_input = driver.GetBraking();
+        double braking_input = 0.;
+		/*data_out(0) = throttle_input;
         cosimul_interface.SendData(time, &data_out);*/
 
         // Update modules (process inputs from other modules)
-        driver.Synchronize(time);
+        //driver.Synchronize(time);
         terrain.Synchronize(time);
         tract.Synchronize(time, steering_input, braking_input, throttle_input, terrain);
 
-        GetLog() << "FL " << tract.GetVehicle().GetSuspension(0)->GetSpindleRot(VehicleSide::LEFT);
-        GetLog() << "FR " << tract.GetVehicle().GetSuspension(0)->GetSpindleRot(VehicleSide::RIGHT).GetZaxis();
-        app.Synchronize(driver.GetInputModeAsString(), steering_input, throttle_input, braking_input);
+        //app.Synchronize(driver.GetInputModeAsString(), steering_input, throttle_input, braking_input);
 
         // Advance simulation for one timestep for all modules
-        double step = enforce_soft_real_time ? realtime_timer.SuggestSimulationStep(step_size) : step_size;
-        driver.Advance(step);
+        //double step = enforce_soft_real_time ? realtime_timer.SuggestSimulationStep(step_size) : step_size;
+        double step = step_size;
+		//driver.Advance(step);
         terrain.Advance(step);
         tract.Advance(step);
-        app.Advance(step);
+        //app.Advance(step);
 
         // Increment frame number
         step_number++;
 
-        app.EndScene();
+		//GetLog() << time;
+
+        //app.EndScene();
     }
+
+    /* Do your stuff here */
+    printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
+    GetLog() << "speed " << tract.GetVehicle().GetWheelState(0).ang_vel;
+	system("PAUSE");
 
     return 0;
 }
