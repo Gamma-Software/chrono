@@ -71,7 +71,7 @@ double terrainWidth = 200.0;   // size in Y direction
 ChVector<> trackPoint(0.0, 0.0, .75);
 
 // Simulation step sizes
-double step_size = 0.005;
+double step_size = 0.007;
 double tire_step_size = 0.001;
 bool enforce_soft_real_time = true;
 
@@ -81,8 +81,10 @@ double render_step_size = 1.0 / FPS;  // FPS = 50
 
 // POV-Ray output
 bool povray_output = false;
-const std::string out_dir = GetChronoOutputPath() + "HMMWV9";
+const std::string out_dir = GetChronoOutputPath() + "TRACT";
 const std::string pov_dir = out_dir + "/POVRAY";
+
+//#define VISU
 
 // =============================================================================
 #include <time.h>
@@ -113,11 +115,12 @@ int main(int argc, char* argv[]) {
     tract.SetVehicleStepSize(step_size);
     tract.Initialize();
 
-    tract.SetChassisVisualizationType(VisualizationType::PRIMITIVES);
-    tract.SetSuspensionVisualizationType(VisualizationType::PRIMITIVES);
-    tract.SetSteeringVisualizationType(VisualizationType::PRIMITIVES);
-    tract.SetWheelVisualizationType(VisualizationType::PRIMITIVES);
-    tract.SetTireVisualizationType(VisualizationType::PRIMITIVES);
+	VisualizationType type = VisualizationType::NONE;
+    tract.SetChassisVisualizationType(type);
+    tract.SetSuspensionVisualizationType(type);
+    tract.SetSteeringVisualizationType(type);
+    tract.SetWheelVisualizationType(type);
+    tract.SetTireVisualizationType(type);
 
 
     // Create the terrain
@@ -127,12 +130,13 @@ int main(int argc, char* argv[]) {
     patch->SetContactFrictionCoefficient(0.9f);
     patch->SetContactRestitutionCoefficient(0.01f);
     patch->SetContactMaterialProperties(2e7f, 0.3f);
-    patch->SetColor(ChColor(0.8f, 0.8f, 0.5f));
-    patch->SetTexture(vehicle::GetDataFile("terrain/textures/tile4.jpg"), 200, 200);
+    //patch->SetColor(ChColor(0.8f, 0.8f, 0.5f));
+    //patch->SetTexture(vehicle::GetDataFile("terrain/textures/tile4.jpg"), 200, 200);
     terrain.Initialize();
 
     // Create the vehicle Irrlicht interface
-    /*ChWheeledVehicleIrrApp app(&tract.GetVehicle(), &tract.GetPowertrain(), L"Tract Demo",
+#ifdef VISU
+    ChWheeledVehicleIrrApp app(&tract.GetVehicle(), &tract.GetPowertrain(), L"Tract Demo",
                                irr::core::dimension2d<irr::u32>(1000, 800), irr::ELL_NONE);
     app.SetSkyBox();
     app.AddTypicalLights(irr::core::vector3df(30.f, -30.f, 100.f), irr::core::vector3df(30.f, 50.f, 100.f), 250, 130);
@@ -140,11 +144,13 @@ int main(int argc, char* argv[]) {
     app.SetTimestep(step_size);
     app.AssetBindAll();
     app.AssetUpdateAll();
-
+#endif  // VISU
+	
+	
     // Create the interactive driver system
-    ChIrrGuiDriver driver(app);
-    driver.Initialize();
-	*/
+    //ChIrrGuiDriver driver(app);
+    //driver.Initialize();
+	
     // Set the time response for steering and throttle keyboard inputs.
     double steering_time = 1.0;  // time to go from 0 to +1 (or from 0 to -1)
     double throttle_time = 1.0;  // time to go from 0 to +1
@@ -170,10 +176,10 @@ int main(int argc, char* argv[]) {
     }
 
     // Set up vehicle output
-    tract.GetVehicle().SetChassisOutput(true);
+    /*tract.GetVehicle().SetChassisOutput(true);
     tract.GetVehicle().SetSuspensionOutput(0, true);
     tract.GetVehicle().SetSteeringOutput(0, true);
-    tract.GetVehicle().SetOutput(ChVehicleOutput::ASCII, out_dir, "output", 0.1);
+    tract.GetVehicle().SetOutput(ChVehicleOutput::ASCII, out_dir, "output", 0.1);*/
 
     // Generate JSON information with available output channels
     tract.GetVehicle().ExportComponentList(out_dir + "/component_list.json");
@@ -195,23 +201,28 @@ int main(int argc, char* argv[]) {
     clock_t tStart = clock();
     while (time < 10.){
         time = tract.GetSystem()->GetChTime();
-        //app.BeginScene(true, true, irr::video::SColor(255, 140, 161, 192));
-        //app.DrawAll();
+
+#ifdef VISU
+        app.BeginScene(true, true, irr::video::SColor(255, 140, 161, 192));
+        app.DrawAll();
+#endif
+
+        
 
         // Output POV-Ray data
-        if (povray_output && step_number % render_steps == 0) {
+        /*if (povray_output && step_number % render_steps == 0) {
             char filename[100];
             sprintf(filename, "%s/data_%03d.dat", pov_dir.c_str(), render_frame + 1);
             utils::WriteShapesPovray(tract.GetSystem(), filename);
             render_frame++;
-        }
+        }*/
 
         // Collect output data from modules (for inter-module communication)
         //double throttle_input = driver.GetThrottle();
         double throttle_input = time/10;
-        GetLog() << "speed " << tract.GetVehicle().GetWheelState(0).ang_vel.x() << "\n";
+        //GetLog() << "speed " << tract.GetVehicle().GetWheelState(0).ang_vel.x() << "\n";
         //double steering_input = driver.GetSteering();
-        double steering_input = 0.;
+        double steering_input = 0.5;
         //double braking_input = driver.GetBraking();
         double braking_input = 0.;
 		/*data_out(0) = throttle_input;
@@ -230,19 +241,24 @@ int main(int argc, char* argv[]) {
 		//driver.Advance(step);
         terrain.Advance(step);
         tract.Advance(step);
-        //app.Advance(step);
+
+#ifdef VISU
+		app.Advance(step);
 
         // Increment frame number
-        step_number++;
+        //step_number++;
 
 		//GetLog() << time;
 
-        //app.EndScene();
+        app.EndScene();
+#endif
     }
 
     /* Do your stuff here */
     printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
-    GetLog() << "speed " << tract.GetVehicle().GetWheelState(0).ang_vel;
+    GetLog() << "accel " << tract.GetVehicle().GetWheelState(0).rot.GetVector().z();
+    GetLog() << "speed " << tract.GetVehicle().GetVehicleSpeed();
+    
 	system("PAUSE");
 
     return 0;
