@@ -3,6 +3,7 @@
 
 SET(DEMOS
   demo_COSIM_socket
+  demo_COSIM_socket-rtmaps
   demo_COSIM_data_exchange
   demo_COSIM_hydraulics
 )

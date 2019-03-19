@@ -107,11 +107,8 @@ class MySimpleCar {
     // Build and initialize the car, creating all bodies corresponding to
     // the various parts and adding them to the physical system - also creating
     // and adding constraints to the system.
-    MySimpleCar(ChSystemNSC& my_system,        ///< the Chrono physical system
-                ISceneManager* msceneManager,  ///< the Irrlicht scene manager for 3d shapes
-                IVideoDriver* mdriver          ///< the Irrlicht video driver
-    ) {
-        throttle = 0;  // initially, gas throttle is 0.
+    MySimpleCar(ChSystemNSC& my_system) {
+        throttle = 1;  // initially, gas throttle is 0.
         conic_tau = 0.2;
         gear_tau = 0.3;
         max_motor_torque = 80;
@@ -600,12 +597,12 @@ int main(int argc, char* argv[]) {
     //    will be handled by this ChSystemNSC object.
     ChSystemNSC my_system;
 
-    // 2.- Create the Irrlicht visualization.
+    /*// 2.- Create the Irrlicht visualization.
     ChIrrApp application(&my_system, L"Simple vehicle suspension", core::dimension2d<u32>(640, 480), false);
     ChIrrWizard::add_typical_Logo(application.GetDevice());
     ChIrrWizard::add_typical_Sky(application.GetDevice());
     ChIrrWizard::add_typical_Lights(application.GetDevice());
-    ChIrrWizard::add_typical_Camera(application.GetDevice(), core::vector3df(0, 0, -6));
+    ChIrrWizard::add_typical_Camera(application.GetDevice(), core::vector3df(0, 0, -6));*/
 
     // 3- Create the rigid bodies of the simpified car suspension mechanical system
     //   maybe setting position/mass/inertias of
@@ -624,15 +621,15 @@ int main(int argc, char* argv[]) {
     my_system.AddBody(my_ground);
 
     // ..some obstacles on the ground:
-    for (int i = 0; i < 6; i++) {
+    /*for (int i = 0; i < 6; i++) {
         auto my_obstacle = std::make_shared<ChBodyEasyBox>(1, 0.1, 0.5, 60.0, true, true);
         my_obstacle->SetPos(ChVector<>(20 * ChRandom(), 2, 20 * ChRandom()));
         my_obstacle->SetMass(3);
         my_system.AddBody(my_obstacle);
-    }
+    }*/
 
     // ..the car (this class - see above - is a 'set' of bodies and links, automatically added at creation)
-    MySimpleCar* mycar = new MySimpleCar(my_system, application.GetSceneManager(), application.GetVideoDriver());
+    MySimpleCar* mycar = new MySimpleCar(my_system);
 
     //
     // CREATE A CUSTOM COMPOSITE MATERIAL
@@ -663,8 +660,8 @@ int main(int argc, char* argv[]) {
     my_system.GetContactContainer()->RegisterAddContactCallback(&mycontact_callback);
 
     // Bind visualization assets.
-    application.AssetBindAll();
-    application.AssetUpdateAll();
+    //application.AssetBindAll();
+    //application.AssetUpdateAll();
 
     //
     // USER INTERFACE
@@ -672,7 +669,7 @@ int main(int argc, char* argv[]) {
 
     // Create some graphical-user-interface (GUI) items to show on the screen.
     // This requires an event receiver object -see above.
-    MyEventReceiver receiver(&my_system, application.GetDevice(), mycar);
+    //MyEventReceiver receiver(&my_system, application.GetDevice(), mycar);
 
     //
     // SETTINGS
@@ -688,18 +685,22 @@ int main(int argc, char* argv[]) {
     // real-time step of the simulation..
     ChRealtimeStepTimer m_realtime_timer;
 
-    while (application.GetDevice()->run()) {
+    double time = 0.;
+
+    clock_t tStart = clock();
+    while (time < 2.) {
+        time = my_system.GetChTime();
         // Irrlicht must prepare frame to draw
-        application.BeginScene(true, true, SColor(255, 140, 161, 192));
+        //application.BeginScene(true, true, SColor(255, 140, 161, 192));
 
         // Irrlicht now draws simple lines in 3D world representing a
         // skeleton of the mechanism, in this instant:
         //
         // .. draw solid 3D items (boxes, cylinders, shapes) belonging to Irrlicht scene, if any
-        application.DrawAll();
+        //application.DrawAll();
 
         // .. draw a grid (rotated so that it's horizontal)
-        ChIrrTools::drawGrid(application.GetVideoDriver(), 2, 2, 30, 30,
+        /*ChIrrTools::drawGrid(application.GetVideoDriver(), 2, 2, 30, 30,
                              ChCoordsys<>(ChVector<>(0, 0.01, 0), Q_from_AngX(CH_C_PI_2)),
                              video::SColor(255, 80, 130, 130), true);
 
@@ -716,7 +717,7 @@ int main(int argc, char* argv[]) {
                 ChIrrTools::drawSpring(application.GetVideoDriver(), 0.03, linkspring->GetEndPoint1Abs(),
                                        linkspring->GetEndPoint2Abs(), video::SColor(255, 150, 20, 20), 80, 5, true);
             }
-        }
+        }*/
 
         // The torque applied to wheels, using the ChLinkMotorRotationTorque links between
         // wheels and truss, depends on many parameters (gear, throttle, etc):
@@ -726,12 +727,16 @@ int main(int argc, char* argv[]) {
         // TIME OF THE SIMULATION ADVANCES FOR A SINGLE
         // STEP:
 
-        my_system.DoStepDynamics(m_realtime_timer.SuggestSimulationStep(0.005));
+        my_system.DoStepDynamics(0.005);
 
         // Irrlicht must finish drawing the frame
-        application.EndScene();
+        //application.EndScene();
     }
 
+    /* Do your stuff here */
+    printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
+    printf("speed: %.2f\n", (double)(mycar->wheelLB->GetPos_dt().x()));
+    system("PAUSE");
     if (mycar)
         delete mycar;
 

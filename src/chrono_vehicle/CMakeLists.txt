@@ -177,6 +177,8 @@ set(CV_DRIVER_FILES
     driver/ChPathFollowerDriver.cpp
     driver/ChPathFollowerACCDriver.h
     driver/ChPathFollowerACCDriver.cpp
+    driver/ChPathFollowerDriverNavya.h
+    driver/ChPathFollowerDriverNavya.cpp
 )
 if(ENABLE_MODULE_IRRLICHT)
     set(CVIRR_DRIVER_FILES

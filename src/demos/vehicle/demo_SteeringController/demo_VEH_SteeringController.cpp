@@ -254,7 +254,7 @@ int main(int argc, char* argv[]) {
 
     // Parameterized NATO double lane change (to right)
     ////auto path = DoubleLaneChangePath(ChVector<>(-125, -125, 0.1), 28.93, 3.6105, 25.0, 50.0, false);
- 
+
     ////path->write("my_path.txt");
 
     // ---------------------------------------

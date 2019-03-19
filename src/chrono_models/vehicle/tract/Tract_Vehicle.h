@@ -41,8 +41,10 @@ class CH_MODELS_API Tract_Vehicle : public ChWheeledVehicle {
 
     virtual int GetNumberAxles() const override { return 2; }
 
-    virtual double GetMinTurningRadius() const override { return GetWheelbase(0)/std::tan(GetMaxSteeringAngle()); }
-    virtual double GetMaxSteeringAngle() const override { return 26.9 * CH_C_DEG_TO_RAD; }
+    virtual double GetMinTurningRadius() const override
+    {
+        return 40.;
+    }
 
     void SetInitWheelAngVel(const std::vector<double>& omega) {
         assert(omega.size() == 4);
