@@ -71,6 +71,26 @@ set(CVM_HMMWV_FILES
 )
 source_group("hmmwv" FILES ${CVM_HMMWV_FILES})
 
+set(CVM_TRAILOR_FILES
+    trailor/Trailor.cpp
+    trailor/Trailor.h
+    trailor/Trailor_BrakeSimple.cpp
+    trailor/Trailor_BrakeSimple.h
+    trailor/Trailor_Chassis.h
+    trailor/Trailor_Chassis.cpp
+    trailor/Trailor_RigidSuspension.cpp
+    trailor/Trailor_RigidSuspension.h
+    trailor/Trailor_RigidTire.cpp
+    trailor/Trailor_RigidTire.h
+    trailor/Trailor_Vehicle.cpp
+    trailor/Trailor_Vehicle.h
+    trailor/Trailor_Wheel.cpp
+    trailor/Trailor_Wheel.h
+    trailor/Trailor_LeafspringAxle.cpp
+    trailor/Trailor_LeafspringAxle.h
+)
+source_group("trailor" FILES ${CVM_TRAILOR_FILES})
+
 set(CVM_TRACT_FILES
     tract/Tract.cpp
     tract/Tract.h
@@ -300,6 +320,7 @@ add_library(ChronoModels_vehicle SHARED
     ${CVM_COMMON_FILES}
     ${CVM_HMMWV_FILES}
     ${CVM_TRACT_FILES}
+    ${CVM_TRAILOR_FILES}
     ${CVM_UAZ_FILES}
     ${CVM_GENERIC_FILES}
     ${CVM_SEDAN_FILES}
